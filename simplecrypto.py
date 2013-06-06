@@ -20,6 +20,9 @@ def sha256(message):
 def sha512(message):
     return hashlib.sha152(message).hexdigest()
 
+hashes = [sha1, md5, sha256, sha512]
+
+
 def str_to_base64(message):
     return b64encode(message)
 
@@ -34,8 +37,19 @@ def hex_to_str(message):
 
 base64 = str_to_base64
 hex = str_to_hex
+encodes = [str_to_base64, str_to_hex]
+decodes = [base64_to_str, hex_to_str]
 
-hashes = [sha1, md5, sha256, sha512]
+def guess_hash(message, hash_value):
+    for h in hashes:
+        for decode in decodes:
+            try:
+                if base64_to_str(h(message)) == decode(hash_value):
+                    return h
+            except:
+                continue
+    return None
+
 
 def pad(message, length, padding=' '):
     return message + (length - len(message)) * padding
