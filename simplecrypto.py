@@ -1,5 +1,6 @@
 import hashlib
 import math
+from os import path
 from base64 import b64encode, b64decode
 from Crypto.Cipher import DES, AES
 from Crypto import Random
@@ -38,17 +39,34 @@ def hex_to_str(message):
 base64 = str_to_base64
 hex = str_to_hex
 encodes = [str_to_base64, str_to_hex]
+modifiers = [str.lower, str.upper, str.strip, str.rstrip,
+             path.basename, path.abspath, path.dirname, path.relpath,
+             lambda s: s + '\n', lambda s: '/' + s,
+             lambda s: s.replace('\\', '/'), lambda s: s.replace('-', '')]
 decodes = [base64_to_str, hex_to_str]
 
-def guess_hash(message, hash_value):
-    for h in hashes:
-        for decode in decodes:
-            try:
-                if base64_to_str(h(message)) == decode(hash_value):
-                    return h
-            except:
-                continue
+def apply_modifiers(modifiers, message):
+    try:
+        for modifier in modifiers:
+            message = modifier(message)
+    finally:
+        return message
+
+def guess_hash(message, hash_value, cur_guess=[]):
+    if len(cur_guess) > 4:
+        return None
+
+    if apply_modifiers(cur_guess, message) == hash_value:
+        return cur_guess
+
+    for modifier in hashes + modifiers + decodes:
+        next_guess = cur_guess + [modifier]
+        if guess_hash(message, hash_value, next_guess):
+            return next_guess
+        
     return None
+
+print guess_hash('teste\n', sha1('teste'))
 
 
 def pad(message, length, padding=' '):
