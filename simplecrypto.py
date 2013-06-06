@@ -36,13 +36,18 @@ def str_to_hex(message):
 def hex_to_str(message):
     return message.decode('hex')
 
+def append_newline(s):
+    return s + '\n'
+
+def replace_backslashes(s):
+    return s.replace('\\', '/')
+
 base64 = str_to_base64
 hex = str_to_hex
 encodes = [str_to_base64, str_to_hex]
-modifiers = [str.lower, str.upper, str.strip, str.rstrip,
-             path.basename, path.abspath, path.dirname, path.relpath,
-             lambda s: s + '\n', lambda s: '/' + s,
-             lambda s: s.replace('\\', '/'), lambda s: s.replace('-', '')]
+modifiers = [str.lower, str.upper, str.strip,
+             append_newline, replace_backslashes,
+             path.basename, path.abspath, path.dirname]
 decodes = [base64_to_str, hex_to_str]
 
 def apply_modifiers(modifiers, message):
@@ -52,21 +57,19 @@ def apply_modifiers(modifiers, message):
     finally:
         return message
 
-def guess_hash(message, hash_value, cur_guess=[]):
-    if len(cur_guess) > 4:
-        return None
+def guess_hash(message, hash_value):
+    from collections import deque
+    guesses = deque()
+    guesses.append([])
+    while len(guesses):
+        guess = guesses.popleft()
+        if apply_modifiers(guess, message) == hash_value:
+            return guess
 
-    if apply_modifiers(cur_guess, message) == hash_value:
-        return cur_guess
-
-    for modifier in hashes + modifiers + decodes:
-        next_guess = cur_guess + [modifier]
-        if guess_hash(message, hash_value, next_guess):
-            return next_guess
-        
+        if len(guess) < 5:
+            for modifier in hashes + modifiers + decodes + encodes:
+                guesses.append(guess + [modifier])
     return None
-
-print guess_hash('teste\n', sha1('teste'))
 
 
 def pad(message, length, padding=' '):
