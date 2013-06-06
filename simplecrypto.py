@@ -26,7 +26,16 @@ def str_to_base64(message):
 def base64_to_str(message):
     return b64decode(message)
 
+def str_to_hex(message):
+    return message.encode('hex')
+
+def hex_to_str(message):
+    return message.decode('hex')
+
 base64 = str_to_base64
+hex = str_to_hex
+
+hashes = [sha1, md5, sha256, sha512]
 
 def pad(message, length, padding=' '):
     return message + (length - len(message)) * padding
