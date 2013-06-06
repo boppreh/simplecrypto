@@ -1,6 +1,6 @@
 import hashlib
 import math
-import base64
+from base64 import b64encode, b64decode
 from Crypto.Cipher import DES, AES
 from Crypto import Random
 
@@ -21,10 +21,12 @@ def sha512(message):
     return hashlib.sha152(message).hexdigest()
 
 def str_to_base64(message):
-    return base64.b64encode(message)
+    return b64encode(message)
 
 def base64_to_str(message):
-    return base64.b64decode(message)
+    return b64decode(message)
+
+base64 = str_to_base64
 
 def pad(message, length, padding=' '):
     return message + (length - len(message)) * padding
@@ -57,3 +59,9 @@ def encrypt_aes(message, password):
 
 def decrypt_aes(message, password):
     return decrypt(message, password, 'aes')
+
+def encrypt_des(message, password):
+    return encrypt(message, password, 'des')
+
+def decrypt_des(message, password):
+    return decrypt(message, password, 'des')
