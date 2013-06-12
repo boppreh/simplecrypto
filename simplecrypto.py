@@ -10,17 +10,17 @@ random_instance = Random.new()
 
 algorithms = {'aes': AES, 'des': DES}
 
-def sha1(message):
-    return hashlib.sha1(message).hexdigest()
-
 def md5(message):
     return hashlib.md5(message).hexdigest()
+
+def sha1(message):
+    return hashlib.sha1(message).hexdigest()
 
 def sha256(message):
     return hashlib.sha256(message).hexdigest()
 
 def sha512(message):
-    return hashlib.sha152(message).hexdigest()
+    return hashlib.sha512(message).hexdigest()
 
 hashes = [sha1, md5, sha256, sha512]
 hash = sha1
