@@ -3,6 +3,7 @@ import math
 from os import path
 from base64 import b64encode, b64decode
 from Crypto.Cipher import DES, AES
+from Crypto.PublicKey import RSA
 from Crypto import Random
 
 random_instance = Random.new()
@@ -22,6 +23,7 @@ def sha512(message):
     return hashlib.sha152(message).hexdigest()
 
 hashes = [sha1, md5, sha256, sha512]
+hash = sha1
 
 
 def str_to_base64(message):
@@ -109,3 +111,26 @@ def encrypt_des(message, password):
 
 def decrypt_des(message, password):
     return decrypt(message, password, 'des')
+
+class RsaWrapper(object):
+    def __init__(self, rsa):
+        self.rsa = rsa
+        self.publickey = rsa.publickey()
+
+    def encrypt(self, message):
+        return self.publickey.encrypt(message, random_instance.read(1))
+
+    def decrypt(self, message):
+        return self.rsa.decrypt(message)
+
+    def sign(self, message):
+        return self.rsa.sign(hash(message), '')
+
+    def verify(self, message, signature):
+        return self.rsa.verify(hash(message), signature)
+
+    def verify_hash(self, message_hash, signature):
+        return self.rsa.verify(message_hash, signature)
+
+def make_rsa(nbits=2048):
+    return RsaWrapper(RSA.generate(nbits, random_instance.read))
