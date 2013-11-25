@@ -6,11 +6,13 @@ from Crypto.Cipher import DES, AES
 from Crypto.PublicKey import RSA
 from Crypto import Random
 
-random_instance = Random.new()
+_random_instance = Random.new()
 
 algorithms = {'aes': AES, 'des': DES}
 
 def md5(message):
+    if isinstance(message, str):
+        message = message.encode('utf-8')
     return hashlib.md5(message).hexdigest()
 
 def sha1(message):
@@ -46,15 +48,15 @@ def replace_backslashes(s):
 
 base64 = str_to_base64
 hex = str_to_hex
-encodes = [str_to_base64, str_to_hex]
-modifiers = [str.lower, str.upper, str.strip,
+_encodes = [str_to_base64, str_to_hex]
+_modifiers = [str.lower, str.upper, str.strip,
              append_newline, replace_backslashes,
              path.basename, path.abspath, path.dirname]
-decodes = [base64_to_str, hex_to_str]
+_decodes = [base64_to_str, hex_to_str]
 
-def apply_modifiers(modifiers, message):
+def _apply_modifiers(_modifiers, message):
     try:
-        for modifier in modifiers:
+        for modifier in _modifiers:
             message = modifier(message)
     finally:
         return message
@@ -65,11 +67,11 @@ def guess_hash(message, hash_value):
     guesses.append([])
     while len(guesses):
         guess = guesses.popleft()
-        if apply_modifiers(guess, message) == hash_value:
+        if _apply_modifiers(guess, message) == hash_value:
             return guess
 
         if len(guess) < 5:
-            for modifier in hashes + modifiers + decodes + encodes:
+            for modifier in hashes + _modifiers + _decodes + _encodes:
                 guesses.append(guess + [modifier])
     return None
 
@@ -82,7 +84,7 @@ def pad_multiple(message, len_multiple, padding=' '):
     return pad(message, int(next_length), padding)
 
 def random(n_bytes):
-    return random_instance.read(n_bytes)
+    return _random_instance.read(n_bytes)
 
 def encrypt(message, password, algorithm='aes'):
     cls = algorithms[algorithm]
@@ -100,25 +102,13 @@ def decrypt(message, password, algorithm='aes'):
                        iv)
     return instance.decrypt(message)
 
-def encrypt_aes(message, password):
-    return encrypt(message, password, 'aes')
-
-def decrypt_aes(message, password):
-    return decrypt(message, password, 'aes')
-
-def encrypt_des(message, password):
-    return encrypt(message, password, 'des')
-
-def decrypt_des(message, password):
-    return decrypt(message, password, 'des')
-
 class RsaWrapper(object):
     def __init__(self, rsa):
         self.rsa = rsa
         self.publickey = rsa.publickey()
 
     def encrypt(self, message):
-        return self.publickey.encrypt(message, random_instance.read(1))
+        return self.publickey.encrypt(message, _random_instance.read(1))
 
     def decrypt(self, message):
         return self.rsa.decrypt(message)
@@ -132,5 +122,9 @@ class RsaWrapper(object):
     def verify_hash(self, message_hash, signature):
         return self.rsa.verify(message_hash, signature)
 
-def make_rsa(nbits=2048):
-    return RsaWrapper(RSA.generate(nbits, random_instance.read))
+def generate_keypair(nbits=2048):
+    return RsaWrapper(RSA.generate(nbits, _random_instance.read))
+
+if __name__ == '__main__':
+    p = random(32)
+    print(decrypt(encrypt('asdf', p), p))
