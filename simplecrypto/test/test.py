@@ -61,7 +61,7 @@ class TestAsymetric(unittest.TestCase):
         self.assertEqual(b'test', rsa.decrypt(rsa.encrypt(b'test')))
         self.assertEqual(b'test', rsa.decrypt(rsa.encrypt('test')))
 
-    def _test_sign(self):
+    def test_sign(self):
         rsa = generate_keypair(1024)
         self.assertTrue(rsa.verify(b'test', rsa.sign(b'test')))
         self.assertTrue(rsa.verify(b'test', rsa.sign('test')))

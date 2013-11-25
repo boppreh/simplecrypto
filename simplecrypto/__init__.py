@@ -123,10 +123,10 @@ class RsaWrapper(object):
         return self.rsa.decrypt(message)
 
     def sign(self, message):
-        return self.rsa.sign(hash(message), b'')
+        return self.rsa.sign(from_hex(hash(message)), b'')
 
     def verify(self, message, signature):
-        return self.rsa.verify(hash(message), signature)
+        return self.rsa.verify(from_hex(hash(message)), signature)
 
     def verify_hash(self, message_hash, signature):
         return self.rsa.verify(message_hash, signature)
