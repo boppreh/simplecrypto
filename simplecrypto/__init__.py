@@ -117,13 +117,13 @@ class RsaWrapper(object):
         self.publickey = rsa.publickey()
 
     def encrypt(self, message):
-        return self.publickey.encrypt(message, _random_instance.read(1))
+        return self.publickey.encrypt(to_bytes(message), _random_instance.read(1))
 
     def decrypt(self, message):
         return self.rsa.decrypt(message)
 
     def sign(self, message):
-        return self.rsa.sign(hash(message), '')
+        return self.rsa.sign(hash(message), b'')
 
     def verify(self, message, signature):
         return self.rsa.verify(hash(message), signature)

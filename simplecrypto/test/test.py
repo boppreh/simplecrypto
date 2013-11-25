@@ -48,13 +48,25 @@ class TestConversion(unittest.TestCase):
         self.assertEqual(b'test', to_bytes('test'))
         self.assertEqual(b'test', to_bytes(b'test'))
 
-class TestEncryption(unittest.TestCase):
+class TestSymmetric(unittest.TestCase):
     def test_aes(self):
         self.assertEqual(b'test', decrypt(encrypt(b'test', b'pass'), b'pass'))
         self.assertEqual(b'test', decrypt(encrypt(b'test', 'pass'), 'pass'))
         self.assertEqual(b'test', decrypt(encrypt('test', b'pass'), b'pass'))
         self.assertEqual(b'test', decrypt(encrypt('test', 'pass'), 'pass'))
 
+class TestAsymetric(unittest.TestCase):
+    def test_encrypt(self):
+        rsa = generate_keypair(1024)
+        self.assertEqual(b'test', rsa.decrypt(rsa.encrypt(b'test')))
+        self.assertEqual(b'test', rsa.decrypt(rsa.encrypt('test')))
+
+    def _test_sign(self):
+        rsa = generate_keypair(1024)
+        self.assertTrue(rsa.verify(b'test', rsa.sign(b'test')))
+        self.assertTrue(rsa.verify(b'test', rsa.sign('test')))
+        self.assertTrue(rsa.verify('test', rsa.sign('test')))
+        self.assertTrue(rsa.verify('test', rsa.sign(b'test')))
 
 
 if __name__ == '__main__':
