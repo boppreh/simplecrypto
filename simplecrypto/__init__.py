@@ -87,10 +87,11 @@ def guess_hash(message, hash_value):
     return None
 
 
-def pad(message, length, padding=' '):
+def pad(message, length, padding=b'0'):
+    message = to_bytes(message)
     return message + (length - len(message)) * padding
 
-def pad_multiple(message, len_multiple, padding=' '):
+def pad_multiple(message, len_multiple, padding=b'0'):
     next_length = math.ceil(len(message) / float(len_multiple)) * len_multiple
     return pad(message, int(next_length), padding)
 
@@ -103,10 +104,10 @@ def encrypt(message, password, algorithm='aes'):
     instance = cls.new(pad_multiple(password, 16),
                        cls.MODE_CFB,
                        iv)
-    return str_to_base64(iv + instance.encrypt(message))
+    return to_base64(iv + instance.encrypt(message))
 
 def decrypt(message, password, algorithm='aes'):
-    message = base64_to_str(message)
+    message = from_base64(message)
     iv, message = message[:AES.block_size], message[AES.block_size:]
     instance = AES.new(pad_multiple(password, 16),
                        AES.MODE_CFB,

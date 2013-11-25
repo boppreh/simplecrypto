@@ -40,6 +40,21 @@ class TestConversion(unittest.TestCase):
         self.assertEqual(b'test', from_hex(to_hex('test')))
         self.assertEqual(b'test', from_hex(to_hex(b'test')))
 
+    def test_str(self):
+        self.assertEqual('test', to_str('test'))
+        self.assertEqual('test', to_str(b'test'))
+
+    def test_bytes(self):
+        self.assertEqual(b'test', to_bytes('test'))
+        self.assertEqual(b'test', to_bytes(b'test'))
+
+class TestEncryption(unittest.TestCase):
+    def test_aes(self):
+        self.assertEqual(b'test', decrypt(encrypt(b'test', b'pass'), b'pass'))
+        self.assertEqual(b'test', decrypt(encrypt(b'test', 'pass'), 'pass'))
+        self.assertEqual(b'test', decrypt(encrypt('test', b'pass'), b'pass'))
+        self.assertEqual(b'test', decrypt(encrypt('test', 'pass'), 'pass'))
+
 
 if __name__ == '__main__':
     unittest.main()
