@@ -9,8 +9,6 @@ from binascii import hexlify, unhexlify
 
 _random_instance = Random.new()
 
-algorithms = {'aes': AES, 'des': DES}
-
 def md5(message):
     return hashlib.md5(to_bytes(message)).hexdigest()
 
@@ -98,15 +96,14 @@ def pad_multiple(message, len_multiple, padding=b'0'):
 def random(n_bytes):
     return _random_instance.read(n_bytes)
 
-def encrypt(message, password, algorithm='aes'):
-    cls = algorithms[algorithm]
-    iv = random(cls.block_size)
-    instance = cls.new(pad_multiple(password, 16),
-                       cls.MODE_CFB,
+def encrypt(message, password):
+    iv = random(AES.block_size)
+    instance = AES.new(pad_multiple(password, 16),
+                       AES.MODE_CFB,
                        iv)
     return to_base64(iv + instance.encrypt(message))
 
-def decrypt(message, password, algorithm='aes'):
+def decrypt(message, password):
     message = from_base64(message)
     iv, message = message[:AES.block_size], message[AES.block_size:]
     instance = AES.new(pad_multiple(password, 16),

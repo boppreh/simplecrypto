@@ -56,5 +56,6 @@ class TestEncryption(unittest.TestCase):
         self.assertEqual(b'test', decrypt(encrypt('test', 'pass'), 'pass'))
 
 
+
 if __name__ == '__main__':
     unittest.main()
