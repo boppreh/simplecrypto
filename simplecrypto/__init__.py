@@ -11,18 +11,16 @@ _random_instance = Random.new()
 algorithms = {'aes': AES, 'des': DES}
 
 def md5(message):
-    if isinstance(message, str):
-        message = message.encode('utf-8')
-    return hashlib.md5(message).hexdigest()
+    return hashlib.md5(to_bytes(message)).hexdigest()
 
 def sha1(message):
-    return hashlib.sha1(message).hexdigest()
+    return hashlib.sha1(to_bytes(message)).hexdigest()
 
 def sha256(message):
-    return hashlib.sha256(message).hexdigest()
+    return hashlib.sha256(to_bytes(message)).hexdigest()
 
 def sha512(message):
-    return hashlib.sha512(message).hexdigest()
+    return hashlib.sha512(to_bytes(message)).hexdigest()
 
 hashes = [sha1, md5, sha256, sha512]
 hash = sha1
@@ -39,6 +37,12 @@ def str_to_hex(message):
 
 def hex_to_str(message):
     return message.decode('hex')
+
+def to_bytes(message):
+    if isinstance(message, str):
+        return message.encode('utf-8')
+    else:
+        return bytes(message)
 
 def append_newline(s):
     return s + '\n'
@@ -124,7 +128,3 @@ class RsaWrapper(object):
 
 def generate_keypair(nbits=2048):
     return RsaWrapper(RSA.generate(nbits, _random_instance.read))
-
-if __name__ == '__main__':
-    p = random(32)
-    print(decrypt(encrypt('asdf', p), p))
