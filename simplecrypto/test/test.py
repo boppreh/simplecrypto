@@ -31,5 +31,15 @@ class TestHashing(unittest.TestCase):
         self.assertEqual('cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e', sha512(''))
         self.assertEqual('cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e', sha512(b''))
 
+class TestConversion(unittest.TestCase):
+    def test_base64(self):
+        self.assertEqual(b'test', from_base64(to_base64('test')))
+        self.assertEqual(b'test', from_base64(to_base64(b'test')))
+
+    def test_hex(self):
+        self.assertEqual(b'test', from_hex(to_hex('test')))
+        self.assertEqual(b'test', from_hex(to_hex(b'test')))
+
+
 if __name__ == '__main__':
     unittest.main()

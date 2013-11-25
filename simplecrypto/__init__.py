@@ -5,6 +5,7 @@ from base64 import b64encode, b64decode
 from Crypto.Cipher import DES, AES
 from Crypto.PublicKey import RSA
 from Crypto import Random
+from binascii import hexlify, unhexlify
 
 _random_instance = Random.new()
 
@@ -26,17 +27,17 @@ hashes = [sha1, md5, sha256, sha512]
 hash = sha1
 
 
-def str_to_base64(message):
-    return b64encode(message)
+def to_base64(message):
+    return b64encode(to_bytes(message))
 
-def base64_to_str(message):
+def from_base64(message):
     return b64decode(message)
 
-def str_to_hex(message):
-    return message.encode('hex')
+def to_hex(message):
+    return hexlify(to_bytes(message))
 
-def hex_to_str(message):
-    return message.decode('hex')
+def from_hex(message):
+    return unhexlify(message)
 
 def to_bytes(message):
     if isinstance(message, str):
@@ -44,19 +45,25 @@ def to_bytes(message):
     else:
         return bytes(message)
 
-def append_newline(s):
+def to_str(message):
+    if isinstance(message, str):
+        return message
+    else:
+        return message.decode('utf-8')
+
+def _append_newline(s):
     return s + '\n'
 
-def replace_backslashes(s):
+def _replace_backslashes(s):
     return s.replace('\\', '/')
 
-base64 = str_to_base64
-hex = str_to_hex
-_encodes = [str_to_base64, str_to_hex]
+base64 = to_base64
+hex = to_hex
+_encodes = [to_base64, to_hex]
 _modifiers = [str.lower, str.upper, str.strip,
-             append_newline, replace_backslashes,
+             _append_newline, _replace_backslashes,
              path.basename, path.abspath, path.dirname]
-_decodes = [base64_to_str, hex_to_str]
+_decodes = [from_base64, from_hex]
 
 def _apply_modifiers(_modifiers, message):
     try:
