@@ -1,9 +1,4 @@
-0.1.1 (2013-11-25)
-++++++++++++++++++
-
-- Include README and fix PIP installation
-
-0.1.0 (2013-11-25)
+0.1.0 (2013-11-26)
 ++++++++++++++++++
 
 - Initial release.
