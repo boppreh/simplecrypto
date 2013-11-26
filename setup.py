@@ -8,7 +8,7 @@ setup(
     packages=['simplecrypto'],
     url='http://pypi.python.org/pypi/simplecrypto/',
     license='LICENSE.txt',
-    description='Simplecrypto',
+    description='simplecrypto',
     long_description=open('README.md').read(),
 
     install_requires=[
@@ -16,7 +16,7 @@ setup(
     ],
 
     classifiers=[
-        'Development Status :: 1 - Planning',
+        'Development Status :: 2 - Pre-Alpha',
         'Topic :: Security :: Cryptography',
         'License :: OSI Approved :: MIT License',
     ],
