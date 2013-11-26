@@ -33,10 +33,18 @@ class TestHashing(unittest.TestCase):
 
 class TestConversion(unittest.TestCase):
     def test_base64(self):
+        self.assertEqual(b'', to_base64(''))
+        self.assertEqual(b'', to_base64(b''))
+        self.assertEqual(b'', from_base64(''))
+        self.assertEqual(b'', from_base64(b''))
         self.assertEqual(b'test', from_base64(to_base64('test')))
         self.assertEqual(b'test', from_base64(to_base64(b'test')))
 
     def test_hex(self):
+        self.assertEqual(b'', to_hex(''))
+        self.assertEqual(b'', to_hex(b''))
+        self.assertEqual(b'', from_hex(''))
+        self.assertEqual(b'', from_hex(b''))
         self.assertEqual(b'test', from_hex(to_hex('test')))
         self.assertEqual(b'test', from_hex(to_hex(b'test')))
 
