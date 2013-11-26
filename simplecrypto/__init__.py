@@ -44,7 +44,7 @@ def to_base64(message):
     """
     Returns the base64 representation of a string or bytes.
     """
-    return b64encode(to_bytes(message))
+    return b64encode(to_bytes(message)).decode('ascii')
 
 def from_base64(message):
     """

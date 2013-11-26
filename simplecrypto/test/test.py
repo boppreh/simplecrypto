@@ -33,8 +33,8 @@ class TestHashing(unittest.TestCase):
 
 class TestConversion(unittest.TestCase):
     def test_base64(self):
-        self.assertEqual(b'', to_base64(''))
-        self.assertEqual(b'', to_base64(b''))
+        self.assertEqual('', to_base64(''))
+        self.assertEqual('', to_base64(b''))
         self.assertEqual(b'', from_base64(''))
         self.assertEqual(b'', from_base64(b''))
         self.assertEqual(b'test', from_base64(to_base64('test')))
