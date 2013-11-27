@@ -41,8 +41,8 @@ class TestConversion(unittest.TestCase):
         self.assertEqual(b'test', from_base64(to_base64(b'test')))
 
     def test_hex(self):
-        self.assertEqual(b'', to_hex(''))
-        self.assertEqual(b'', to_hex(b''))
+        self.assertEqual('', to_hex(''))
+        self.assertEqual('', to_hex(b''))
         self.assertEqual(b'', from_hex(''))
         self.assertEqual(b'', from_hex(b''))
         self.assertEqual(b'test', from_hex(to_hex('test')))
@@ -65,12 +65,12 @@ class TestSymmetric(unittest.TestCase):
 
 class TestAsymetric(unittest.TestCase):
     def test_encrypt(self):
-        rsa = generate_keypair(1024)
+        rsa = Rsa(1024)
         self.assertEqual(b'test', rsa.decrypt(rsa.encrypt(b'test')))
         self.assertEqual(b'test', rsa.decrypt(rsa.encrypt('test')))
 
     def test_sign(self):
-        rsa = generate_keypair(1024)
+        rsa = Rsa(1024)
         self.assertTrue(rsa.verify(b'test', rsa.sign(b'test')))
         self.assertTrue(rsa.verify(b'test', rsa.sign('test')))
         self.assertTrue(rsa.verify('test', rsa.sign('test')))

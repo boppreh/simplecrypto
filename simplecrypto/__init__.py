@@ -56,7 +56,7 @@ def to_hex(message):
     """
     Returns the (string) hexadecimal representation of a string or bytes.
     """
-    return hexlify(to_bytes(message))
+    return hexlify(to_bytes(message)).decode('ascii')
 
 def from_hex(message):
     """
