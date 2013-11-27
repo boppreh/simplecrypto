@@ -168,9 +168,12 @@ def decrypt(message, password):
     return instance.decrypt(message)
 
 class Rsa(object):
-    def __init__(self, rsa):
-        self.rsa = rsa
-        self.publickey = rsa.publickey()
+    def __init__(self, source=2048):
+        if isinstance(source, int):
+            source = _RSA.generate(source, _random_instance.read) 
+
+        self.rsa = source
+        self.publickey = self.rsa.publickey()
 
     def encrypt(self, message):
         """
@@ -201,9 +204,3 @@ class Rsa(object):
         Verifies if a given `message_hash` matches the given `signature`.
         """
         return self.rsa.verify(message_hash, signature)
-
-def generate_keypair(nbits=2048):
-    """
-    Generates a new RSA keypair.
-    """
-    return Rsa(_RSA.generate(nbits, _random_instance.read))
