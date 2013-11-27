@@ -170,7 +170,7 @@ def decrypt(message, password):
 class Rsa(object):
     def __init__(self, source=2048):
         if isinstance(source, int):
-            source = _RSA.generate(source, _random_instance.read) 
+            source = _RSA.generate(source, random) 
 
         self.rsa = source
         self.publickey = self.rsa.publickey()
@@ -179,7 +179,7 @@ class Rsa(object):
         """
         Encrypts the given `message` with the public key.
         """
-        return self.publickey.encrypt(to_bytes(message), _random_instance.read(1))
+        return self.publickey.encrypt(to_bytes(message), random(1))
 
     def decrypt(self, message):
         """
