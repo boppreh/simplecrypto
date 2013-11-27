@@ -2,10 +2,10 @@ import hashlib
 import math
 from os import path
 from base64 import b64encode, b64decode
-from Crypto.Cipher import DES, AES
-from Crypto.PublicKey import RSA
-from Crypto import Random
 from binascii import hexlify, unhexlify
+from Crypto.Cipher import DES, AES
+from Crypto.PublicKey import RSA as _RSA
+from Crypto import Random
 
 _random_instance = Random.new()
 
@@ -167,7 +167,7 @@ def decrypt(message, password):
                        iv)
     return instance.decrypt(message)
 
-class RsaWrapper(object):
+class Rsa(object):
     def __init__(self, rsa):
         self.rsa = rsa
         self.publickey = rsa.publickey()
@@ -206,4 +206,4 @@ def generate_keypair(nbits=2048):
     """
     Generates a new RSA keypair.
     """
-    return RsaWrapper(RSA.generate(nbits, _random_instance.read))
+    return Rsa(_RSA.generate(nbits, _random_instance.read))
