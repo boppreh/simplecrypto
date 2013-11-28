@@ -3,8 +3,10 @@ import math
 from os import path
 from base64 import b64encode, b64decode
 from binascii import hexlify, unhexlify
-from Crypto.Cipher import DES, AES
+from Crypto.Cipher import DES, AES, PKCS1_OAEP
+from Crypto.Signature import PKCS1_PSS
 from Crypto.PublicKey import RSA as _RSA
+from Crypto.Hash import SHA as RSA_SHA
 from Crypto import Random
 
 _random_instance = Random.new()
@@ -139,6 +141,7 @@ class AesKey(object):
     def __init__(self, key):
         self.key = key
         self.algorithm = 'AES-256'
+        self.block_size = 256 / 8
 
     def encrypt(self, message):
         iv = random(AES.block_size)
@@ -159,15 +162,19 @@ class RsaPublicKey(object):
     """
     Class for asymmetric public RSA key.
     """
-    def __init__(self, key, algorithm):
-        self.key = key
+    def __init__(self, key, algorithm, block_size):
+        self.oaep = PKCS1_OAEP.new(key)
+        self.pss = PKCS1_PSS.new(key)
         self.algorithm = algorithm
+        self.block_size = block_size
 
     def encrypt(self, message):
-        return self.key.encrypt(to_bytes(message), None)
+        return self.oaep.encrypt(to_bytes(message))
 
     def verify(self, message, signature):
-        return self.key.verify(message, signature)
+        h = RSA_SHA.new()
+        h.update(message)
+        return self.pss.verify(h, signature)
 
 class RsaKeypair(object):
     """
@@ -175,8 +182,13 @@ class RsaKeypair(object):
     """
     def __init__(self, nbits=2048):
         self.rsa = _RSA.generate(nbits, random)
+        self.oaep = PKCS1_OAEP.new(self.rsa)
+        self.pss = PKCS1_PSS.new(self.rsa)
         self.algorithm = 'RSA-' + str(nbits)
-        self.publickey = RsaPublicKey(self.rsa.publickey(), self.algorithm)
+        self.block_size = nbits / 8
+        self.publickey = RsaPublicKey(self.rsa.publickey(),
+                                      self.algorithm,
+                                      self.block_size)
 
     def encrypt(self, message):
         # Delegate to public key.
@@ -187,11 +199,12 @@ class RsaKeypair(object):
         return self.publickey.verify(from_hex(hash(message)), signature)
     
     def decrypt(self, message):
-        return self.rsa.decrypt(message)
+        return self.oaep.decrypt(message)
 
     def sign(self, message):
-        # TODO: cryptographic padding
-        return self.rsa.sign(from_hex(hash(message)), None)
+        h = RSA_SHA.new()
+        h.update(message)
+        return self.pss.sign(h)
 
     def encrypt_to(self, message, recipient):
         raise NotImplementedError
