@@ -138,6 +138,7 @@ class AesKey(object):
     """
     def __init__(self, key):
         self.key = key
+        self.algorithm = 'AES-256'
 
     def encrypt(self, message):
         iv = random(AES.block_size)
@@ -158,8 +159,9 @@ class RsaPublicKey(object):
     """
     Class for asymmetric public RSA key.
     """
-    def __init__(self, key):
+    def __init__(self, key, algorithm):
         self.key = key
+        self.algorithm = algorithm
 
     def encrypt(self, message):
         return self.key.encrypt(to_bytes(message), None)
@@ -173,7 +175,8 @@ class RsaKeypair(object):
     """
     def __init__(self, nbits=2048):
         self.rsa = _RSA.generate(nbits, random)
-        self.publickey = RsaPublicKey(self.rsa.publickey())
+        self.algorithm = 'RSA-' + str(nbits)
+        self.publickey = RsaPublicKey(self.rsa.publickey(), self.algorithm)
 
     def encrypt(self, message):
         # Delegate to public key.
