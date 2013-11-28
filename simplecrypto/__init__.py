@@ -167,40 +167,35 @@ def decrypt(message, password):
                        iv)
     return instance.decrypt(message)
 
-class Rsa(object):
-    def __init__(self, source=2048):
-        if isinstance(source, int):
-            source = _RSA.generate(source, random) 
-
-        self.rsa = source
-        self.publickey = self.rsa.publickey()
+class RsaPublicKey(object):
+    def __init__(self, key):
+        self.key = key
 
     def encrypt(self, message):
-        """
-        Encrypts the given `message` with the public key.
-        """
-        return self.publickey.encrypt(to_bytes(message), random(1))
+        return self.key.encrypt(to_bytes(message), None)
 
+    def verify(self, message, signature):
+        return self.key.verify(message, signature)
+
+class RsaKeypair(object):
+    def __init__(self, nbits=2048):
+        self.rsa = _RSA.generate(nbits, random)
+        self.publickey = RsaPublicKey(self.rsa.publickey())
+
+    def encrypt(self, message):
+        # Delegate to public key.
+        return self.publickey.encrypt(message)
+
+    def verify(self, message, signature):
+        # Delegate to public key.
+        return self.publickey.verify(from_hex(hash(message)), signature)
+    
     def decrypt(self, message):
-        """
-        Decrypts the given `message` with the private key.
-        """
         return self.rsa.decrypt(message)
 
     def sign(self, message):
-        """
-        Returns the signature of a given `message`, made with the private key.
-        """
-        return self.rsa.sign(from_hex(hash(message)), b'')
+        # TODO: cryptographic padding
+        return self.rsa.sign(from_hex(hash(message)), None)
 
-    def verify(self, message, signature):
-        """
-        Verifies if a given `message` matches the given `signature`.
-        """
-        return self.rsa.verify(from_hex(hash(message)), signature)
-
-    def verify_hash(self, message_hash, signature):
-        """
-        Verifies if a given `message_hash` matches the given `signature`.
-        """
-        return self.rsa.verify(message_hash, signature)
+    def encrypt_to(self, message, recipient):
+        raise NotImplementedError

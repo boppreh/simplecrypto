@@ -65,12 +65,12 @@ class TestSymmetric(unittest.TestCase):
 
 class TestAsymetric(unittest.TestCase):
     def test_encrypt(self):
-        rsa = Rsa(1024)
+        rsa = RsaKeypair(1024)
         self.assertEqual(b'test', rsa.decrypt(rsa.encrypt(b'test')))
         self.assertEqual(b'test', rsa.decrypt(rsa.encrypt('test')))
 
     def test_sign(self):
-        rsa = Rsa(1024)
+        rsa = RsaKeypair(1024)
         self.assertTrue(rsa.verify(b'test', rsa.sign(b'test')))
         self.assertTrue(rsa.verify(b'test', rsa.sign('test')))
         self.assertTrue(rsa.verify('test', rsa.sign('test')))
