@@ -57,11 +57,15 @@ class TestConversion(unittest.TestCase):
         self.assertEqual(b'test', to_bytes(b'test'))
 
 class TestSymmetric(unittest.TestCase):
-    def test_aes(self):
+    def test_simple(self):
         self.assertEqual(b'test', decrypt(encrypt(b'test', b'pass'), b'pass'))
         self.assertEqual(b'test', decrypt(encrypt(b'test', 'pass'), 'pass'))
         self.assertEqual(b'test', decrypt(encrypt('test', b'pass'), b'pass'))
         self.assertEqual(b'test', decrypt(encrypt('test', 'pass'), 'pass'))
+
+    def test_long_message(self):
+        m = b'test' * 100
+        self.assertEqual(m, decrypt(encrypt(m, 'pass'), 'pass'))
 
 class TestAsymetric(unittest.TestCase):
     def test_encrypt(self):
@@ -75,6 +79,11 @@ class TestAsymetric(unittest.TestCase):
         self.assertTrue(rsa.verify(b'test', rsa.sign('test')))
         self.assertTrue(rsa.verify('test', rsa.sign('test')))
         self.assertTrue(rsa.verify('test', rsa.sign(b'test')))
+
+    def test_long_message(self):
+        m = b'test' * 100
+        rsa = RsaKeypair(1024)
+        self.assertEqual(m, rsa.decrypt(rsa.encrypt(m)))
 
 
 if __name__ == '__main__':

@@ -169,11 +169,18 @@ class RsaPublicKey(object):
         self.block_size = block_size
 
     def encrypt(self, message):
-        return self.oaep.encrypt(to_bytes(message))
+        m = to_bytes(message)
+        if len(m) <= self.block_size:
+            return self.oaep.encrypt(m)
+
+        symmetric_key = random(AES.block_size)
+        encrypted_symmetric_key = self.oaep.encrypt(symmetric_key)
+
+        return encrypted_symmetric_key + from_base64(encrypt(m, symmetric_key))
 
     def verify(self, message, signature):
         h = RSA_SHA.new()
-        h.update(message)
+        h.update(to_bytes(message))
         return self.pss.verify(h, signature)
 
 class RsaKeypair(object):
@@ -185,7 +192,7 @@ class RsaKeypair(object):
         self.oaep = PKCS1_OAEP.new(self.rsa)
         self.pss = PKCS1_PSS.new(self.rsa)
         self.algorithm = 'RSA-' + str(nbits)
-        self.block_size = nbits / 8
+        self.block_size = nbits // 8
         self.publickey = RsaPublicKey(self.rsa.publickey(),
                                       self.algorithm,
                                       self.block_size)
@@ -196,14 +203,20 @@ class RsaKeypair(object):
 
     def verify(self, message, signature):
         # Delegate to public key.
-        return self.publickey.verify(from_hex(hash(message)), signature)
+        return self.publickey.verify(message, signature)
     
     def decrypt(self, message):
-        return self.oaep.decrypt(message)
+        m = to_bytes(message)
+        if len(message) <= self.block_size:
+            return self.oaep.decrypt(message)
+
+        encrypted_symmetric_key, m = m[:self.block_size], m[self.block_size:]
+        symmetric_key = self.oaep.decrypt(encrypted_symmetric_key)
+        return decrypt(m, symmetric_key)
 
     def sign(self, message):
         h = RSA_SHA.new()
-        h.update(message)
+        h.update(to_bytes(message))
         return self.pss.sign(h)
 
     def encrypt_to(self, message, recipient):
