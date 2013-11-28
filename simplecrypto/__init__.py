@@ -112,28 +112,52 @@ def random(n_bytes):
     """
     return _random_instance.read(n_bytes)
 
-def encrypt(message, password):
+def encrypt(message, key):
     """
-    Encrypt a `message` with a shared `password`.
+    Encrypts `message` with the `key`. If `key` is bytes or str, it is used as
+    symmetric AES256 key.
     """
-    iv = random(AES.block_size)
-    instance = AES.new(pad_multiple(password, 16),
-                       AES.MODE_CFB,
-                       iv)
-    return to_base64(iv + instance.encrypt(message))
+    if type(key) in [str, bytes]:
+        key = AesKey(key)
 
-def decrypt(message, password):
+    return key.encrypt(message)
+
+def decrypt(message, key):
     """
-    Decrypt an encrypted `message` with a shared `password`.
+    Decrypts `message` with the `key`. If `key` is bytes or str, it is used as
+    symmetric AES256 key.
     """
-    message = from_base64(message)
-    iv, message = message[:AES.block_size], message[AES.block_size:]
-    instance = AES.new(pad_multiple(password, 16),
-                       AES.MODE_CFB,
-                       iv)
-    return instance.decrypt(message)
+    if type(key) in [str, bytes]:
+        key = AesKey(key)
+
+    return key.decrypt(message)
+
+class AesKey(object):
+    """
+    Class for symmetric AES with 256 bits block size.
+    """
+    def __init__(self, key):
+        self.key = key
+
+    def encrypt(self, message):
+        iv = random(AES.block_size)
+        instance = AES.new(pad_multiple(self.key, 16),
+                           AES.MODE_CFB,
+                           iv)
+        return to_base64(iv + instance.encrypt(to_bytes(message)))
+
+    def decrypt(self, message):
+        message = from_base64(message)
+        iv, message = message[:AES.block_size], message[AES.block_size:]
+        instance = AES.new(pad_multiple(self.key, 16),
+                           AES.MODE_CFB,
+                           iv)
+        return instance.decrypt(message)
 
 class RsaPublicKey(object):
+    """
+    Class for asymmetric public RSA key.
+    """
     def __init__(self, key):
         self.key = key
 
@@ -144,6 +168,9 @@ class RsaPublicKey(object):
         return self.key.verify(message, signature)
 
 class RsaKeypair(object):
+    """
+    Class for asymmetric RSA keypair.
+    """
     def __init__(self, nbits=2048):
         self.rsa = _RSA.generate(nbits, random)
         self.publickey = RsaPublicKey(self.rsa.publickey())
