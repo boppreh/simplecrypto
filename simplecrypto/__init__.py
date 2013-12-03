@@ -114,78 +114,113 @@ def random(n_bytes):
     """
     return _random_instance.read(n_bytes)
 
+
 def encrypt(message, key):
     """
-    Encrypts `message` with the `key`. If `key` is bytes or str, it is used as
-    symmetric AES256 key.
+    Shortcut for AES256 base64 encryption with string or bytes key.
     """
-    if type(key) in [str, bytes]:
-        key = AesKey(key)
+    return AesKey(to_bytes(key)).encrypt(message)
 
-    return key.encrypt(message)
-
-def decrypt(message, key):
+def decrypt(encrypted_message, key):
     """
-    Decrypts `message` with the `key`. If `key` is bytes or str, it is used as
-    symmetric AES256 key.
+    Shortcut for AES256 base64 decryption with string or bytes key.
     """
-    if type(key) in [str, bytes]:
-        key = AesKey(key)
+    return AesKey(to_bytes(key)).decrypt(encrypted_message)
 
-    return key.decrypt(message)
-
-def session_encrypt(message, destination_key):
+def session_encrypt_raw(message, destination_key):
     """
     Encrypts the message with a random session key, and protects this session
     key by encrypting with the destination key.
 
     Superior alternative when the destination key is slow (ex RSA).
     """
-    session_key = random(AES.block_size)
+    session_key_bytes = random(AES.block_size)
+    session_key = AesKey(session_key_bytes)
 
-    encrypted_message = encrypt(message, session_key)
-    encrypted_session_key = destination_key.encrypt(session_key)
-    return encrypted_session_key + from_base64(encrypted_message)
+    encrypted_message = session_key.encrypt_raw(message)
+    encrypted_session_key = destination_key.encrypt_raw(session_key_bytes)
+    return encrypted_session_key + encrypted_message
 
-def session_decrypt(encrypted_message, destination_key):
+def session_decrypt_raw(encrypted_message, destination_key):
     """
     Decrypts the message from a random session key, encrypted with the
     destination key.
 
     Superior alternative when the destination key is slow (ex RSA).
     """
-    m = to_bytes(encrypted_message)
     block_size = destination_key.block_size
-    encrypted_symmetric_key, m = m[:block_size], m[block_size:]
-    symmetric_key = destination_key.decrypt(encrypted_symmetric_key)
-    return decrypt(base64(m), symmetric_key)
+
+    encrypted_session_key = encrypted_message[:block_size]
+    message = encrypted_message[block_size:]
+    session_key = AesKey(destination_key.decrypt_raw(encrypted_session_key))
+    return session_key.decrypt_raw(message)
 
 
-class AesKey(object):
+class Key(object):
+    def encrypt_raw(self, message):
+        """
+        Encrypts the given message. `message` must be of type `bytes` and the
+        return is also raw bytes.
+        """
+        raise NotImplementedError('This is just an abstract Key class.')
+
+    def decrypt_raw(self, encrypted_message):
+        """
+        Decrypts the given message. `encrypted_message` must be of type `bytes`
+        and the return is also raw bytes.
+        """
+        raise NotImplementedError('This is just an abstract Key class.')
+
+    def encrypt(self, message):
+        """
+        Encrypts the given message, first converting it to raw bytes. Returns
+        the base64 encoded encrypted message.
+        """
+        return base64(self.encrypt_raw(to_bytes(message)))
+
+    def decrypt(self, encrypted_message):
+        """
+        Decrypts the given encrypted message, converting it to bytes as
+        required. Returns the message's bytes.
+        """
+        return self.decrypt_raw(from_base64(encrypted_message))
+
+    def serialize(self):
+        """
+        Returns a `bytes` object representing this key.
+        """
+        raise NotImplementedError()
+        
+
+class AesKey(Key):
     """
     Class for symmetric AES with 256 bits block size.
     """
-    def __init__(self, key):
-        self.key = key
+    def __init__(self, key=None):
         self.algorithm = 'AES-256'
-        self.block_size = 256 / 8
+        self.block_size = 256 // 8
+        self.key = key or random(self.block_size)
 
-    def encrypt(self, message):
+    def encrypt_raw(self, message):
         iv = random(AES.block_size)
         instance = AES.new(pad_multiple(self.key, 16),
                            AES.MODE_CFB,
                            iv)
-        return to_base64(iv + instance.encrypt(to_bytes(message)))
+        return iv + instance.encrypt(message)
 
-    def decrypt(self, message):
-        message = from_base64(message)
-        iv, message = message[:AES.block_size], message[AES.block_size:]
+    def decrypt_raw(self, encrypted_message):
+        iv = encrypted_message[:AES.block_size]
+        message = encrypted_message[AES.block_size:]
         instance = AES.new(pad_multiple(self.key, 16),
                            AES.MODE_CFB,
                            iv)
         return instance.decrypt(message)
 
-class RsaPublicKey(object):
+    def serialize(self):
+        return self.key
+
+
+class RsaPublicKey(Key):
     """
     Class for asymmetric public RSA key.
     """
@@ -195,19 +230,22 @@ class RsaPublicKey(object):
         self.algorithm = algorithm
         self.block_size = block_size
 
-    def encrypt(self, message):
-        m = to_bytes(message)
-        if len(m) <= self.block_size:
-            return self.oaep.encrypt(m)
+    def encrypt_raw(self, message):
+        if len(message) <= self.block_size:
+            return self.oaep.encrypt(message)
         else:
-            return session_encrypt(message, self)
+            return session_encrypt_raw(message, self)
+
+    def decrypt_raw(self, encrypted_message):
+        raise TypeError('RSA public keys are unable to decrypt messages.')
 
     def verify(self, message, signature):
         h = RSA_SHA.new()
         h.update(to_bytes(message))
         return self.pss.verify(h, signature)
 
-class RsaKeypair(object):
+
+class RsaKeypair(Key):
     """
     Class for asymmetric RSA keypair.
     """
@@ -221,20 +259,19 @@ class RsaKeypair(object):
                                       self.algorithm,
                                       self.block_size)
 
-    def encrypt(self, message):
+    def encrypt_raw(self, message):
         # Delegate to public key.
-        return self.publickey.encrypt(message)
+        return self.publickey.encrypt_raw(message)
+    
+    def decrypt_raw(self, message):
+        if len(message) <= self.block_size + AES.block_size * 2:
+            return self.oaep.decrypt(message)
+        else:
+            return session_decrypt_raw(message, self)
 
     def verify(self, message, signature):
         # Delegate to public key.
         return self.publickey.verify(message, signature)
-    
-    def decrypt(self, message):
-        m = to_bytes(message)
-        if len(message) <= self.block_size:
-            return self.oaep.decrypt(message)
-        else:
-            return session_decrypt(message, self)
 
     def sign(self, message):
         h = RSA_SHA.new()

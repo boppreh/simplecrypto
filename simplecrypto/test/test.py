@@ -67,7 +67,7 @@ class TestSymmetric(unittest.TestCase):
         m = b'test' * 100
         self.assertEqual(m, decrypt(encrypt(m, 'pass'), 'pass'))
 
-class TestAsymetric(unittest.TestCase):
+class TestAsymmetric(unittest.TestCase):
     def test_encrypt(self):
         rsa = RsaKeypair(1024)
         self.assertEqual(b'test', rsa.decrypt(rsa.encrypt(b'test')))
@@ -84,6 +84,13 @@ class TestAsymetric(unittest.TestCase):
         m = b'test' * 100
         rsa = RsaKeypair(1024)
         self.assertEqual(m, rsa.decrypt(rsa.encrypt(m)))
+
+class TestEncryptionProtocols(unittest.TestCase):
+    def test_session(self):
+        key = AesKey()
+        encrypted = session_encrypt_raw(b'test', key)
+        decrypted = session_decrypt_raw(encrypted, key)
+        self.assertEqual(b'test', decrypted)
 
 
 if __name__ == '__main__':
