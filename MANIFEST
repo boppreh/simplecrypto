@@ -4,3 +4,4 @@ LICENSE.txt
 README.md
 setup.py
 simplecrypto/__init__.py
+simplecrypto/guess.py
