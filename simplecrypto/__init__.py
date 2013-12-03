@@ -52,7 +52,7 @@ def from_base64(message):
     """
     Returns the bytes from a base64 representation.
     """
-    return b64decode(to_bytes(message))
+    return b64decode(to_bytes(message), validate=True)
 
 def to_hex(message):
     """
