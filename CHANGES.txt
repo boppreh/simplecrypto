@@ -1,3 +1,13 @@
+0.2.0 (2013-12-03)
+++++++++++++++++++
+
+- Return str from `to_base64` and allow `from_base64` to receive str.
+- Create classes for different key types.
+- Change return from `to_hex` to str for consistency with base64.
+- `guess_hash` function moved to different module.
+- Automatically use session keys when encrypting large messages.
+
+
 0.1.0 (2013-11-26)
 ++++++++++++++++++
 
