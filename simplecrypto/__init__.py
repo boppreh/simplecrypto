@@ -134,6 +134,33 @@ def decrypt(message, key):
 
     return key.decrypt(message)
 
+def session_encrypt(message, destination_key):
+    """
+    Encrypts the message with a random session key, and protects this session
+    key by encrypting with the destination key.
+
+    Superior alternative when the destination key is slow (ex RSA).
+    """
+    session_key = random(AES.block_size)
+
+    encrypted_message = encrypt(message, session_key)
+    encrypted_session_key = destination_key.encrypt(session_key)
+    return encrypted_session_key + from_base64(encrypted_message)
+
+def session_decrypt(encrypted_message, destination_key):
+    """
+    Decrypts the message from a random session key, encrypted with the
+    destination key.
+
+    Superior alternative when the destination key is slow (ex RSA).
+    """
+    m = to_bytes(encrypted_message)
+    block_size = destination_key.block_size
+    encrypted_symmetric_key, m = m[:block_size], m[block_size:]
+    symmetric_key = destination_key.decrypt(encrypted_symmetric_key)
+    return decrypt(base64(m), symmetric_key)
+
+
 class AesKey(object):
     """
     Class for symmetric AES with 256 bits block size.
@@ -172,11 +199,8 @@ class RsaPublicKey(object):
         m = to_bytes(message)
         if len(m) <= self.block_size:
             return self.oaep.encrypt(m)
-
-        symmetric_key = random(AES.block_size)
-        encrypted_symmetric_key = self.oaep.encrypt(symmetric_key)
-
-        return encrypted_symmetric_key + from_base64(encrypt(m, symmetric_key))
+        else:
+            return session_encrypt(message, self)
 
     def verify(self, message, signature):
         h = RSA_SHA.new()
@@ -209,10 +233,8 @@ class RsaKeypair(object):
         m = to_bytes(message)
         if len(message) <= self.block_size:
             return self.oaep.decrypt(message)
-
-        encrypted_symmetric_key, m = m[:self.block_size], m[self.block_size:]
-        symmetric_key = self.oaep.decrypt(encrypted_symmetric_key)
-        return decrypt(base64(m), symmetric_key)
+        else:
+            return session_decrypt(message, self)
 
     def sign(self, message):
         h = RSA_SHA.new()
