@@ -1,3 +1,11 @@
+0.2.1 (2013-12-03)
+++++++++++++++++++
+
+- Add base `Key` class.
+- Introduce `raw` versions of encrypt and decrypt.
+- Implemented key printing and comparison.
+
+
 0.2.0 (2013-12-03)
 ++++++++++++++++++
 
