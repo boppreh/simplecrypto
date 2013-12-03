@@ -212,7 +212,7 @@ class RsaKeypair(object):
 
         encrypted_symmetric_key, m = m[:self.block_size], m[self.block_size:]
         symmetric_key = self.oaep.decrypt(encrypted_symmetric_key)
-        return decrypt(m, symmetric_key)
+        return decrypt(base64(m), symmetric_key)
 
     def sign(self, message):
         h = RSA_SHA.new()
