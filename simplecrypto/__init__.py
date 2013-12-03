@@ -196,6 +196,9 @@ class Key(object):
             return '<{} {}>'.format(type(self).__name__, hash(self.serialize()))
         except NotImplementedError:
             return object.__str__(self)
+
+    def __eq__(self, other):
+        return self.serialize() == other.serialize()
         
 
 class AesKey(Key):
