@@ -218,6 +218,3 @@ class RsaKeypair(object):
         h = RSA_SHA.new()
         h.update(to_bytes(message))
         return self.pss.sign(h)
-
-    def encrypt_to(self, message, recipient):
-        raise NotImplementedError
