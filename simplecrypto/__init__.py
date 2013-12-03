@@ -190,6 +190,12 @@ class Key(object):
         Returns a `bytes` object representing this key.
         """
         raise NotImplementedError()
+
+    def __str__(self):
+        try:
+            return '<{} {}>'.format(type(self).__name__, hash(self.serialize()))
+        except NotImplementedError:
+            return object.__str__(self)
         
 
 class AesKey(Key):
