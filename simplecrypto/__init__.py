@@ -206,7 +206,7 @@ def receive(payload, recipient_key, sender_key):
     decrypted_message = session_key.decrypt_raw(payload[end_of_session_keys:])
     signature = decrypted_message[:sender_key.block_size]
     message = decrypted_message[sender_key.block_size:]
-    if sender_key.verify(message, signature):
+    if not sender_key.verify(message, signature):
         raise EncryptionError('Message signature doesn\'t match.')
     return message
 
