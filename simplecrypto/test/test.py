@@ -106,6 +106,15 @@ class TestEncryptionProtocols(unittest.TestCase):
         self.assertEqual(b'test', receive(encrypted_message, receiver1, sender))
         self.assertEqual(b'test', receive(encrypted_message, receiver2, sender))
 
+    def test_different_sized_send(self):
+        sender = RsaKeypair(2048)
+        receiver1 = RsaKeypair(1024)
+        receiver2 = RsaKeypair(1024)
+        encrypted_message = send('test', sender, receiver1, receiver2)
+        self.assertEqual(b'test', receive(encrypted_message, receiver1, sender))
+        self.assertEqual(b'test', receive(encrypted_message, receiver2, sender))
+
+
 
 
 if __name__ == '__main__':
