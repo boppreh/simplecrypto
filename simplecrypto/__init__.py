@@ -157,6 +157,13 @@ def session_decrypt_raw(encrypted_message, destination_key):
     return session_key.decrypt_raw(message)
 
 def send(message, sender_key, *recipient_keys):
+    """
+    Sends a secure message to one or more recipients. The message is encrypted
+    with the recipient's key (so only they can read it), and signed with the
+    sender's key (so the recipient can check the authenticity and integrity).
+
+    Returns the binary payload.
+    """
     message = to_bytes(message)
 
     signature = sender_key.sign(message)
@@ -171,6 +178,9 @@ def send(message, sender_key, *recipient_keys):
     return b''.join(payload)
 
 def receive(payload, recipient_key, sender_key):
+    """
+    Receives a secure message from a binary payload.
+    """
     n_recipients = struct.unpack('I', payload[:4])[0]
     end_of_session_keys = 4 + n_recipients * recipient_key.block_size
     end_of_signature = end_of_session_keys + sender_key.block_size
