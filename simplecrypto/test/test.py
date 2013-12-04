@@ -63,9 +63,13 @@ class TestSymmetric(unittest.TestCase):
         self.assertEqual(b'test', decrypt(encrypt('test', b'pass'), b'pass'))
         self.assertEqual(b'test', decrypt(encrypt('test', 'pass'), 'pass'))
 
+        self.assertNotEqual(b'test', decrypt(encrypt('test', 'pass'), 'passX'))
+
     def test_long_message(self):
         m = b'test' * 100
         self.assertEqual(m, decrypt(encrypt(m, 'pass'), 'pass'))
+
+        self.assertNotEqual(m, decrypt(encrypt(m, 'pass'), 'passX'))
 
 class TestAsymmetric(unittest.TestCase):
     def test_encrypt(self):
@@ -79,6 +83,8 @@ class TestAsymmetric(unittest.TestCase):
         self.assertTrue(rsa.verify(b'test', rsa.sign('test')))
         self.assertTrue(rsa.verify('test', rsa.sign('test')))
         self.assertTrue(rsa.verify('test', rsa.sign(b'test')))
+
+        self.assertFalse(rsa.verify('test', rsa.sign(b'testX')))
 
     def test_long_message(self):
         m = b'test' * 100
