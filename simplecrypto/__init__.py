@@ -1,5 +1,6 @@
 import hashlib
 import math
+import struct
 from os import path
 from base64 import b64encode, b64decode
 from binascii import hexlify, unhexlify
@@ -154,6 +155,38 @@ def session_decrypt_raw(encrypted_message, destination_key):
     message = encrypted_message[block_size:]
     session_key = AesKey(destination_key.decrypt_raw(encrypted_session_key))
     return session_key.decrypt_raw(message)
+
+def send(message, sender_key, *recipient_keys):
+    message = to_bytes(message)
+
+    signature = sender_key.sign(message)
+    session_key_bytes = random(AES.block_size)
+    session_key = AesKey(session_key_bytes)
+
+    payload = [struct.pack('I', len(recipient_keys))]
+    for recipient_key in recipient_keys:
+        payload.append(recipient_key.encrypt_raw(session_key_bytes))
+    payload.append(session_key.encrypt_raw(signature + message))
+    return bytes().join(payload)
+
+def receive(payload, recipient_key, sender_key):
+    n_recipients = struct.unpack('I', payload[:4])[0]
+    end_of_session_keys = 4 + n_recipients * recipient_key.block_size
+    end_of_signature = end_of_session_keys + sender_key.block_size
+
+    encrypted_session_keys = payload[4:end_of_session_keys]
+
+    for i in range(n_recipients):
+        encrypted_session_key = encrypted_session_keys[i:i +
+                                                       recipient_key.block_size]
+        session_key_bytes = recipient_key.decrypt_raw(encrypted_session_key)
+        session_key = AesKey(session_key_bytes)
+
+    decrypted_message = session_key.decrypt_raw(payload[end_of_session_keys:])
+    signature = decrypted_message[:sender_key.block_size]
+    message = decrypted_message[sender_key.block_size:]
+    assert sender_key.verify(message, signature)
+    return message
 
 
 class Key(object):

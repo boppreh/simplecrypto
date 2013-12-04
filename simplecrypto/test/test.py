@@ -92,6 +92,13 @@ class TestEncryptionProtocols(unittest.TestCase):
         decrypted = session_decrypt_raw(encrypted, key)
         self.assertEqual(b'test', decrypted)
 
+    def test_simple_send(self):
+        sender = RsaKeypair(1024)
+        receiver1 = RsaKeypair(1024)
+        receiver2 = RsaKeypair(1024)
+        encrypted_message = send('test', sender, receiver1)
+        self.assertEqual(b'test', receive(encrypted_message, receiver1, sender))
+
 
 if __name__ == '__main__':
     unittest.main()
