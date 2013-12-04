@@ -6,7 +6,7 @@ setup(
     author='Lucas Boppre Niehues',
     author_email='lucasboppre@gmail.com',
     packages=['simplecrypto'],
-    url='http://pypi.python.org/pypi/simplecrypto/',
+    url='https://github.com/boppreh/simplecrypto',
     license='LICENSE.txt',
     description='simplecrypto',
     long_description=open('README.md').read(),
