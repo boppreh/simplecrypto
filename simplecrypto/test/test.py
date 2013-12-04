@@ -114,6 +114,21 @@ class TestEncryptionProtocols(unittest.TestCase):
         self.assertEqual(b'test', receive(encrypted_message, receiver1, sender))
         self.assertEqual(b'test', receive(encrypted_message, receiver2, sender))
 
+    def test_invalid_receiver(self):
+        sender = RsaKeypair(1024)
+        receiver = RsaKeypair(1024)
+        eve = RsaKeypair(1024)
+        encrypted_message = send('test', sender, receiver)
+        with self.assertRaises(EncryptionError):
+            receive(encrypted_message, eve, sender)
+
+    def test_tampering_send(self):
+        sender = RsaKeypair(1024)
+        receiver = RsaKeypair(1024)
+        encrypted_message = send('test', sender, receiver)
+        with self.assertRaises(EncryptionError):
+            receive(encrypted_message[:-1], receiver, sender)
+
 
 
 
