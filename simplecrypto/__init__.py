@@ -165,9 +165,10 @@ def send(message, sender_key, *recipient_keys):
 
     payload = [struct.pack('I', len(recipient_keys))]
     for recipient_key in recipient_keys:
-        payload.append(recipient_key.encrypt_raw(session_key_bytes))
+        encrypted_session_key = recipient_key.encrypt_raw(session_key_bytes)
+        payload.append(encrypted_session_key)
     payload.append(session_key.encrypt_raw(signature + message))
-    return bytes().join(payload)
+    return b''.join(payload)
 
 def receive(payload, recipient_key, sender_key):
     n_recipients = struct.unpack('I', payload[:4])[0]
@@ -176,12 +177,18 @@ def receive(payload, recipient_key, sender_key):
 
     encrypted_session_keys = payload[4:end_of_session_keys]
 
+    session_key = None
     for i in range(n_recipients):
-        encrypted_session_key = encrypted_session_keys[i:i +
-                                                       recipient_key.block_size]
-        session_key_bytes = recipient_key.decrypt_raw(encrypted_session_key)
+        start = i * recipient_key.block_size
+        end = start + recipient_key.block_size
+        encrypted_session_key = encrypted_session_keys[start:end]
+        try:
+            session_key_bytes = recipient_key.decrypt_raw(encrypted_session_key)
+        except ValueError:
+            continue
         session_key = AesKey(session_key_bytes)
 
+    assert session_key
     decrypted_message = session_key.decrypt_raw(payload[end_of_session_keys:])
     signature = decrypted_message[:sender_key.block_size]
     message = decrypted_message[sender_key.block_size:]
