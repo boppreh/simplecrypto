@@ -9,7 +9,7 @@ setup(
     url='https://github.com/boppreh/simplecrypto',
     license='LICENSE.txt',
     description='simplecrypto',
-    long_description=open('README.md').read(),
+    long_description=open('README.rst').read(),
 
     install_requires=[
         'PyCrypto',
