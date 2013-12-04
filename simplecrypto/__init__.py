@@ -10,6 +10,9 @@ from Crypto.PublicKey import RSA as _RSA
 from Crypto.Hash import SHA as RSA_SHA
 from Crypto import Random
 
+class EncryptionError(TypeError):
+    pass
+
 _random_instance = Random.new()
 
 def md5(message):
@@ -198,11 +201,13 @@ def receive(payload, recipient_key, sender_key):
             continue
         session_key = AesKey(session_key_bytes)
 
-    assert session_key
+    if session_key is None:
+        raise EncryptionError('Unexpected recipient (no respective key found).')
     decrypted_message = session_key.decrypt_raw(payload[end_of_session_keys:])
     signature = decrypted_message[:sender_key.block_size]
     message = decrypted_message[sender_key.block_size:]
-    assert sender_key.verify(message, signature)
+    if sender_key.verify(message, signature):
+        raise EncryptionError('Message signature doesn\'t match.')
     return message
 
 
