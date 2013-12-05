@@ -212,7 +212,18 @@ def receive(payload, recipient_key, sender_key):
 
 
 class Key(object):
+    """
+    Abstract base class for all keys, symmetric or not, public or not.
+
+    Subclasses should implement `encrypt_raw`, `decrypt_raw` and `serialize`
+    as necessary.
+    """
     def __init__(self, algorithm_name, nbits=None, block_size=None):
+        """
+        Instantiates a new Key object. Algorithm name is a short string (ex
+        'RSA') and caller must specify at least one of `nbits` or `block_size`,
+        where `block_size` is measured in bytes.
+        """
         if nbits is None and block_size is not None:
             nbits = block_size * 8
         elif block_size is None and nbits is not None:
