@@ -10,7 +10,7 @@ setup(
     license='MIT',
     description='Simple cryptographic library for hashing and encrypting',
     keywords = 'simple cryptography symmetric asymmetric hash encrypt decrypt rsa aes sha md5',
-    long_description=open('README.rst').read(),
+    long_description=open('README.rst').read() + '\n\Last Updates\n-------------\n' + open('CHANGES.txt').read(),
 
     install_requires=[
         'PyCrypto',
