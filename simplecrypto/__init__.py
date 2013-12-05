@@ -103,7 +103,7 @@ def pad(message, length, padding=b'0'):
     Pads a message with binary zeroes until a given length is reached.
     """
     message = to_bytes(message)
-    return message + (length - len(message)) * padding
+    return message + (length - len(message)) * to_bytes(padding)
 
 def pad_multiple(message, len_multiple, padding=b'0'):
     """
