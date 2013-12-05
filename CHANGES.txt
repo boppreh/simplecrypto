@@ -1,3 +1,12 @@
+0.3.0 (2013-12-05)
+++++++++++++++++++
+
+- Add `serialize` to RSA keys.
+- Allow RSA keys to receive PEM encoded keys in the constructor.
+- Implement `__repr__` method in base Key class (you can now print keys).
+- Split package into modules `key`, `formats`, `hashes`, `random` and `exceptions`.
+
+
 0.2.3 (2013-12-05)
 ++++++++++++++++++
 
