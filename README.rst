@@ -103,7 +103,7 @@ Protocol helpers
 
 
 And miscellaneous helpers
-------------------------
+-------------------------
 
 ::
 
