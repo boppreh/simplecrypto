@@ -11,6 +11,7 @@ import math
 from .random import random
 from .formats import to_bytes, base64, from_base64, pad_multiple
 from .exceptions import EncryptionError
+from .hashes import hash
 
 class Key(object):
     """
