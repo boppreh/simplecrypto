@@ -4,7 +4,14 @@ simplecrypto
 
 Cryptographic library with really simple API.
 
-Includes functions for hashes, symmetric and assymetric crypto, along with helper functions.
+Includes functions for hashes, symmetric and assymetric crypto, along with helper
+functions. Acts as a wrapper for PyCrypto and a few standard libraries.
+
+Install:
+
+::
+
+  pip install simplecrypto
 
 
 Hashes
@@ -35,17 +42,27 @@ Symmetric crypto
   # `encrypt` and `decrypt` use AES-256.
 
   m = encrypt('secret message', 'secret key')
+  print(m)
+  # 'uRKa9xX7zW6QT1yJxIQb5E/0DzaxQglVggnFam5K'
   decrypt(m, 'secret key')
   # b'secret message'
 
   # Generates a new AES-256 random key.
   key = AesKey()
   m = key.encrypt('secret message')
+  print(m)
+  # 'wFTwwaGMMCAsvmQxhmL7ztDksThtWvGm2gy1e2UV'
   key.decrypt(m)
   # b'secret message'
 
   key = AesKey('secret key') # key from string
   key = AesKey(random(32)) # key from bytes
+
+  # AES keys can be exported and imported.
+  open('key', 'wb').write(key.serialize())
+  new_key = AesKey(open('key', 'rb').read())
+  print(key == new_key)
+  # True
 
 
 Asymmetric crypto
@@ -70,6 +87,18 @@ Asymmetric crypto
   m = pkey.encrypt('long message ' * 100)
   skey.decrypt(m)
   # b'long message long message long message...'
+
+  # RSA keypairs can be exported and imported.
+  open('key', 'wb').write(skey.serialize())
+  new_key = RsaKeypair(open('key', 'rb').read())
+  print(skey == new_key)
+  # True
+
+  # Individual public keys too.
+  open('key', 'wb').write(pkey.serialize())
+  new_key = RsaPublicKey(open('key', 'rb').read())
+  print(pkey == new_key)
+  # True
 
 
 Protocol helpers
