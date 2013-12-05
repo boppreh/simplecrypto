@@ -212,6 +212,21 @@ def receive(payload, recipient_key, sender_key):
 
 
 class Key(object):
+    def __init__(self, algorithm_name, nbits=None, block_size=None):
+        if nbits is None and block_size is not None:
+            nbits = block_size * 8
+        elif block_size is None and nbits is not None:
+            # Round number of bits to next power of 2.
+            nbits = 2 ** math.ceil(math.log2(nbits))
+            block_size = nbits // 8
+        else:
+            raise EncryptionError('Must specify `nbits` or `block_size`.')
+
+        self.algorithm_name = algorithm_name
+        self.algorithm = '{}-{}'.format(algorithm_name, nbits)
+        self.block_size = block_size
+        self.nbits = nbits
+
     def encrypt_raw(self, message):
         """
         Encrypts the given message. `message` must be of type `bytes` and the
@@ -261,8 +276,7 @@ class AesKey(Key):
     Class for symmetric AES with 256 bits block size.
     """
     def __init__(self, key=None):
-        self.algorithm = 'AES-256'
-        self.block_size = 256 // 8
+        Key.__init__(self, 'AES', nbits=256)
         self.key = key or random(self.block_size)
 
     def encrypt_raw(self, message):
@@ -293,9 +307,7 @@ class RsaPublicKey(Key):
             key = _RSA.importKey(key)
         self.rsa = key
 
-        nbits = 2 ** math.ceil(math.log2(self.rsa.size()))
-        self.block_size = nbits // 8
-        self.algorithm = 'RSA-' + str(nbits)
+        Key.__init__(self, 'RSA', nbits=self.rsa.size())
 
         self.oaep = PKCS1_OAEP.new(self.rsa)
         self.pss = PKCS1_PSS.new(self.rsa)
@@ -332,11 +344,10 @@ class RsaKeypair(Key):
         else:
             self.rsa = _RSA.importKey(source)
 
-        nbits = 2 ** math.ceil(math.log2(self.rsa.size()))
+        Key.__init__(self, 'RSA', nbits=self.rsa.size())
+
         self.oaep = PKCS1_OAEP.new(self.rsa)
         self.pss = PKCS1_PSS.new(self.rsa)
-        self.algorithm = 'RSA-' + str(nbits)
-        self.block_size = nbits // 8
         self.publickey = RsaPublicKey(self.rsa.publickey())
 
     def encrypt_raw(self, message):
