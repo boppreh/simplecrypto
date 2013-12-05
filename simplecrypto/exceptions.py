@@ -1,0 +1,3 @@
+class EncryptionError(TypeError):
+    pass
+

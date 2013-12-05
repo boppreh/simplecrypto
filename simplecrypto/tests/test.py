@@ -5,6 +5,7 @@ sys.path.append(os.path.join('..', '..'))
 
 import unittest
 from simplecrypto import *
+from simplecrypto.key import session_encrypt_raw, session_decrypt_raw
 
 class TestHashing(unittest.TestCase):
     def test_md5(self):

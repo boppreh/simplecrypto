@@ -1,4 +1,17 @@
-from simplecrypto import *
+"""
+Module for reverse engineering crypto protocols.
+"""
+from os import path
+
+from .hashes import *
+from .formats import *
+
+def _append_newline(s):
+    return s + '\n'
+
+def _replace_backslashes(s):
+    return s.replace('\\', '/')
+
 
 _encodes = [to_base64, to_hex]
 _modifiers = [str.lower, str.upper, str.strip,
