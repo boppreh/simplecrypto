@@ -5,7 +5,7 @@ setup(
     version=open('CHANGES.txt').read().split()[0],
     author='Lucas Boppre Niehues',
     author_email='lucasboppre@gmail.com',
-    packages=['simplecrypto', 'tests'],
+    packages=['simplecrypto'],
     url='https://github.com/boppreh/simplecrypto',
     license='MIT',
     description='Simple cryptographic library for hashing and encrypting',
