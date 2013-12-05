@@ -71,6 +71,11 @@ class TestSymmetric(unittest.TestCase):
 
         self.assertNotEqual(m, decrypt(encrypt(m, 'pass'), 'passX'))
 
+    def test_serialize(self):
+        key = AesKey(b'pass')
+        self.assertEqual(b'pass', key.serialize())
+        self.assertEqual(key, AesKey(key.serialize()))
+
 class TestAsymmetric(unittest.TestCase):
     def test_encrypt(self):
         rsa = RsaKeypair(1024)
@@ -90,6 +95,12 @@ class TestAsymmetric(unittest.TestCase):
         m = b'test' * 100
         rsa = RsaKeypair(1024)
         self.assertEqual(m, rsa.decrypt(rsa.encrypt(m)))
+
+    def test_serialize(self):
+        skey = RsaKeypair(1024)
+        pkey = skey.publickey
+        self.assertEqual(skey, RsaKeypair(skey.serialize()))
+        self.assertEqual(pkey, RsaKeypair(pkey.serialize()))
 
 class TestEncryptionProtocols(unittest.TestCase):
     def test_session(self):

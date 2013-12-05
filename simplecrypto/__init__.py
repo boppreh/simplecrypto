@@ -288,14 +288,20 @@ class RsaPublicKey(Key):
     """
     Class for asymmetric public RSA key.
     """
-    def __init__(self, key, algorithm, block_size):
-        self.oaep = PKCS1_OAEP.new(key)
-        self.pss = PKCS1_PSS.new(key)
-        self.algorithm = algorithm
-        self.block_size = block_size
+    def __init__(self, key):
+        if type(key) in [str, bytes]:
+            key = _RSA.importKey(key)
+        self.rsa = key
+
+        nbits = 2 ** math.ceil(math.log2(self.rsa.size()))
+        self.block_size = nbits // 8
+        self.algorithm = 'RSA-' + str(nbits)
+
+        self.oaep = PKCS1_OAEP.new(self.rsa)
+        self.pss = PKCS1_PSS.new(self.rsa)
 
     def encrypt_raw(self, message):
-        if len(message) <= self.block_size:
+        if len(message) <= self.block_size + AES.block_size * 2:
             return self.oaep.encrypt(message)
         else:
             return session_encrypt_raw(message, self)
@@ -308,20 +314,30 @@ class RsaPublicKey(Key):
         h.update(to_bytes(message))
         return self.pss.verify(h, signature)
 
+    def serialize(self):
+        return self.rsa.exportKey()
+
 
 class RsaKeypair(Key):
     """
     Class for asymmetric RSA keypair.
     """
-    def __init__(self, nbits=2048):
-        self.rsa = _RSA.generate(nbits, random)
+    def __init__(self, source=2048):
+        """
+        Creates a new RSA keypair. Source may either be the serialized bytes or
+        the number of desired bits.
+        """
+        if isinstance(source, int):
+            self.rsa = _RSA.generate(source, random)
+        else:
+            self.rsa = _RSA.importKey(source)
+
+        nbits = 2 ** math.ceil(math.log2(self.rsa.size()))
         self.oaep = PKCS1_OAEP.new(self.rsa)
         self.pss = PKCS1_PSS.new(self.rsa)
         self.algorithm = 'RSA-' + str(nbits)
         self.block_size = nbits // 8
-        self.publickey = RsaPublicKey(self.rsa.publickey(),
-                                      self.algorithm,
-                                      self.block_size)
+        self.publickey = RsaPublicKey(self.rsa.publickey())
 
     def encrypt_raw(self, message):
         # Delegate to public key.
@@ -341,3 +357,6 @@ class RsaKeypair(Key):
         h = RSA_SHA.new()
         h.update(to_bytes(message))
         return self.pss.sign(h)
+
+    def serialize(self):
+        return self.rsa.exportKey()
