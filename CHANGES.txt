@@ -1,3 +1,9 @@
+0.2.3 (2013-12-05)
+++++++++++++++++++
+
+- Update project information (keywords, classifiers, description, etc).
+
+
 0.2.2 (2013-12-04)
 ++++++++++++++++++
 
