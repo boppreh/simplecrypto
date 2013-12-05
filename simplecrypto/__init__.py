@@ -246,7 +246,7 @@ class Key(object):
         """
         raise NotImplementedError()
 
-    def __str__(self):
+    def __repr__(self):
         try:
             return '<{} {}>'.format(type(self).__name__, hash(self.serialize()))
         except NotImplementedError:
