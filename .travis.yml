@@ -6,5 +6,4 @@ python:
 install: pip install .
 script: coverage run simplecrypto/tests/test.py
 
-after_success:
-	converalls
+after_success: converalls
