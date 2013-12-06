@@ -1,11 +1,13 @@
 #! /usr/bin/env python
 import sys
-import os
-sys.path.append(os.path.join('..', '..'))
+from os import path
+project_root = path.join(path.abspath(__file__), '..', '..', '..')
+sys.path.append(path.normpath(project_root))
 
 import unittest
 from simplecrypto import *
 from simplecrypto.key import session_encrypt_raw, session_decrypt_raw
+from simplecrypto.guess import _append_newline, _replace_backslashes
 
 class TestHashing(unittest.TestCase):
     def test_md5(self):
@@ -147,7 +149,21 @@ class TestEncryptionProtocols(unittest.TestCase):
         with self.assertRaises(EncryptionError):
             receive(encrypted_message[:-1], receiver, sender)
 
+class TestGuess(unittest.TestCase):
+    def test_single_hash(self):
+        m = 'message'
+        h = md5(m)
+        self.assertEqual([md5], guess_transformation(m, h))
 
+    def test_formatted_hash(self):
+        m = 'message'
+        h = md5(m) + '\n'
+        self.assertEqual([md5, _append_newline], guess_transformation(m, h))
+
+    def test_path(self):
+        m = 'C:\\Users\\'
+        h = m.replace('\\', '/')
+        self.assertEqual([_replace_backslashes], guess_transformation(m, h))
 
 
 if __name__ == '__main__':

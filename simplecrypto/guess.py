@@ -26,7 +26,7 @@ def _apply_modifiers(_modifiers, message):
     finally:
         return message
 
-def guess_hash(message, hash_value):
+def guess_transformation(message, hash_value):
     """
     Given a `message` and its known value, returns the list of hash or modifiers
     functions applied to the message to arrive at the given `hash_value`.
@@ -44,4 +44,3 @@ def guess_hash(message, hash_value):
         if len(guess) < 5:
             for modifier in hashes + _modifiers + _decodes + _encodes:
                 guesses.append(guess + [modifier])
-    return None
