@@ -3,10 +3,10 @@ language: python
 python: "3.3"
 
 install:
-    - pip install coverage
     - pip install coveralls
     - pip install .
 
-script: coverage run --source simplecrypto simplecrypto/tests/test.py
+
+script: nosetests --with-coverage --cover-package=simplecrypto
 
 after_success: coveralls
