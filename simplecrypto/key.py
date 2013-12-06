@@ -30,7 +30,7 @@ class Key(object):
             nbits = block_size * 8
         elif block_size is None and nbits is not None:
             # Round number of bits to next power of 2.
-            nbits = 2 ** math.ceil(math.log(nbits, 2))
+            nbits = 2 ** math.ceil(math.log2(nbits))
             block_size = nbits // 8
         else:
             raise EncryptionError('Must specify `nbits` or `block_size`.')
