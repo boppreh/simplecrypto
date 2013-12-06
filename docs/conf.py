@@ -17,6 +17,37 @@ import sys
 import os
 sys.path.insert(0, os.path.abspath('..'))
 
+class NullType(object):
+    """ http://code.activestate.com/recipes/576562-yet-another-null-object/ """
+    __singleton = None
+    def __new__(cls, *args, **kwds):
+        if cls.__singleton is None:
+            cls.__singleton = super(NullType,cls).__new__(cls)
+        return cls.__singleton
+    def __len__(self): return 0
+    def __iter__(self): return; yield
+    def __nonzero__ (self): return False
+    def __contains__(self, item): return False
+    def __repr__(self): return '(Null)'
+    def __reduce__(self): return (type(self), ())
+    __oct__ = __hex__ = __repr__
+    __int__ = __long__ = __len__
+    def __float__(self): return 0.0
+    def __call__(self, *args, **kwds): return self
+    __getitem__ = __getattr__ = __setitem__ = __setattr__ = __delitem__ = \
+        __delattr__ = __eq__ = __ne__ = __gt__ = __ge__ = __lt__ = __le__ = \
+        __neg__ = __pos__ = __abs__ = __invert__ = __add__ = __sub__ = \
+        __mul__ = __div__ = __truediv__ = __floordiv__ = __mod__ = \
+        __divmod__ = __pow__ = __lshift__ = __rshift__ =  __and__ = __or__ = \
+        __xor__ = __radd__ = __rsub__ = __rmul__ = __rdiv__ = __rtruediv__ = \
+        __rfloordiv__ = __rmod__ = __rdivmod__ = __rpow__ = __rlshift__ = \
+        __rrshift__ = __rand__ = __ror__ = __rxor__ = __call__
+sys.modules['Crypto'] = NullType()
+sys.modules['Crypto.Cipher'] = NullType()
+sys.modules['Crypto.Signature'] = NullType()
+sys.modules['Crypto.PublicKey'] = NullType()
+sys.modules['Crypto.Hash'] = NullType()
+
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
