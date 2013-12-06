@@ -4,4 +4,9 @@ LICENSE.txt
 README.rst
 setup.py
 simplecrypto/__init__.py
+simplecrypto/exceptions.py
+simplecrypto/formats.py
 simplecrypto/guess.py
+simplecrypto/hashes.py
+simplecrypto/key.py
+simplecrypto/random.py
