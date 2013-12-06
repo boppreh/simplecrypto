@@ -2,6 +2,15 @@
 simplecrypto
 ============
 
+.. image:: https://travis-ci.org/boppreh/simplecrypto.png?branch=master
+    :target: https://travis-ci.org/boppreh/simplecrypto
+
+.. image:: https://badge.fury.io/py/simplecrypto.png
+    :target: http://badge.fury.io/py/simplecrypto
+
+.. image:: https://coveralls.io/repos/boppreh/simplecrypto/badge.png
+    :target: https://coveralls.io/r/boppreh/simplecrypto 
+
 Cryptographic library with really simple API.
 
 Includes functions for hashes, symmetric and assymetric crypto, along with helper
