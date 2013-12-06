@@ -13,14 +13,19 @@ simplecrypto
 
 Cryptographic library with really simple API.
 
-Includes functions for hashes, symmetric and assymetric crypto, along with helper
-functions. Acts as a wrapper for PyCrypto and a few standard libraries.
+Includes functions for hashes, symmetric and asymmetric crypto, along with helper
+functions. Acts as a wrapper for ``PyCrypto`` and a few standard libraries.
 
-Install:
+Installation
+------------
 
 ::
 
   pip install simplecrypto
+
+This library depends on ``PyCrypto``. On Linux this is installed automatically by
+pip. If the dependency installation fail on Windows, you may want to 
+use a `prebuilt installer <http://www.voidspace.org.uk/python/modules.shtml#pycrypto>`_.
 
 
 Hashes

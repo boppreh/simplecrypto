@@ -1,10 +1,19 @@
+0.3.1 (2013-12-06)
+++++++++++++++++++
+
+- Add project to Travis and Coverall.
+- Increase test coverage to 100%.
+- Add installation instructions.
+- Rename ``guess_hash`` to ``guess_transformation``.
+
+
 0.3.0 (2013-12-05)
 ++++++++++++++++++
 
-- Add `serialize` to RSA keys.
+- Add ``serialize`` to RSA keys.
 - Allow RSA keys to receive PEM encoded keys in the constructor.
-- Implement `__repr__` method in base Key class (you can now print keys).
-- Split package into modules `key`, `formats`, `hashes`, `random` and `exceptions`.
+- Implement ``__repr__`` method in base Key class (you can now print keys).
+- Split package into modules ``key``, ``formats``, ``hashes``, ``random`` and ``exceptions``.
 
 
 0.2.3 (2013-12-05)
@@ -16,26 +25,26 @@
 0.2.2 (2013-12-04)
 ++++++++++++++++++
 
-- Add `send` and `receive` functions for secure message building.
-- Raise `EncryptionError` instead of generic errors.
+- Add ``send`` and ``receive`` functions for secure message building.
+- Raise ``EncryptionError`` instead of generic errors.
 - Slightly better test coverage.
 
 
 0.2.1 (2013-12-03)
 ++++++++++++++++++
 
-- Add base `Key` class.
-- Introduce `raw` versions of encrypt and decrypt.
+- Add base ``Key`` class.
+- Introduce ``raw`` versions of encrypt and decrypt.
 - Implemented key printing and comparison.
 
 
 0.2.0 (2013-12-03)
 ++++++++++++++++++
 
-- Return str from `to_base64` and allow `from_base64` to receive str.
+- Return str from ``to_base64`` and allow ``from_base64`` to receive str.
 - Create classes for different key types.
-- Change return from `to_hex` to str for consistency with base64.
-- `guess_hash` function moved to different module.
+- Change return from ``to_hex`` to str for consistency with base64.
+- ``guess_hash`` function moved to different module.
 - Automatically use session keys when encrypting large messages.
 
 
