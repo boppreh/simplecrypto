@@ -44,5 +44,4 @@ guess
 exceptions
 =========================
 
-.. automodule:: simplecrypto.exceptions
-   :members:
+.. autoexception:: simplecrypto.exceptions.EncryptionError

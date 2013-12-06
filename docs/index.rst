@@ -3,8 +3,17 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to simplecrypto's documentation!
-========================================
+User Manual
+===========
+
+.. image:: https://travis-ci.org/boppreh/simplecrypto.png?branch=master
+    :target: https://travis-ci.org/boppreh/simplecrypto
+
+.. image:: https://coveralls.io/repos/boppreh/simplecrypto/badge.png
+    :target: https://coveralls.io/r/boppreh/simplecrypto 
+
+.. image:: https://badge.fury.io/py/simplecrypto.png
+    :target: https://pypi.python.org/pypi/simplecrypto/
 
 Cryptographic library with really simple API.
 
