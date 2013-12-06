@@ -7,6 +7,6 @@ install:
     - pip install coveralls
     - pip install .
 
-script: coverage run simplecrypto/tests/test.py
+script: coverage --source simplecrypto run simplecrypto/tests/test.py
 
 after_success: coveralls
