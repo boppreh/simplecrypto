@@ -12,7 +12,7 @@ Includes functions for hashes, symmetric and asymmetric crypto, along with helpe
 functions. Acts as a wrapper for ``PyCrypto`` and a few standard libraries.
 
 Installation
-------------
+============
 
 ::
 
@@ -24,13 +24,16 @@ use a `prebuilt installer <http://www.voidspace.org.uk/python/modules.shtml#pycr
 
 
 API Documentation
------------------
+=================
 
 .. toctree::
    :maxdepth: 2
 
    api
 
+
+Examples
+========
 
 Hashes
 ------

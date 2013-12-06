@@ -91,13 +91,15 @@ string format.</p>
 <dl class="class">
 <dt id="simplecrypto.key.AesKey">
 <em class="property">class </em><tt class="descclassname">simplecrypto.key.</tt><tt class="descname">AesKey</tt><big>(</big><em>key=None</em><big>)</big><a class="reference internal" href="_modules/simplecrypto/key.html#AesKey"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simplecrypto.key.AesKey" title="Permalink to this definition">¶</a></dt>
-<dd><p>Class for symmetric AES with 256 bits block size.</p>
+<dd><p>Bases: <a class="reference internal" href="#simplecrypto.key.Key" title="simplecrypto.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">simplecrypto.key.Key</span></tt></a></p>
+<p>Class for symmetric AES with 256 bits block size.</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="simplecrypto.key.Key">
 <em class="property">class </em><tt class="descclassname">simplecrypto.key.</tt><tt class="descname">Key</tt><big>(</big><em>algorithm_name</em>, <em>nbits=None</em>, <em>block_size=None</em><big>)</big><a class="reference internal" href="_modules/simplecrypto/key.html#Key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simplecrypto.key.Key" title="Permalink to this definition">¶</a></dt>
-<dd><p>Abstract base class for all keys, symmetric or not, public or not.</p>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">builtins.object</span></tt></p>
+<p>Abstract base class for all keys, symmetric or not, public or not.</p>
 <p>Subclasses should implement <cite>encrypt_raw</cite>, <cite>decrypt_raw</cite> and <cite>serialize</cite>
 as necessary.</p>
 <dl class="method">
@@ -139,13 +141,15 @@ return is also raw bytes.</p>
 <dl class="class">
 <dt id="simplecrypto.key.RsaKeypair">
 <em class="property">class </em><tt class="descclassname">simplecrypto.key.</tt><tt class="descname">RsaKeypair</tt><big>(</big><em>source=2048</em><big>)</big><a class="reference internal" href="_modules/simplecrypto/key.html#RsaKeypair"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simplecrypto.key.RsaKeypair" title="Permalink to this definition">¶</a></dt>
-<dd><p>Class for asymmetric RSA keypair.</p>
+<dd><p>Bases: <a class="reference internal" href="#simplecrypto.key.Key" title="simplecrypto.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">simplecrypto.key.Key</span></tt></a></p>
+<p>Class for asymmetric RSA keypair.</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="simplecrypto.key.RsaPublicKey">
 <em class="property">class </em><tt class="descclassname">simplecrypto.key.</tt><tt class="descname">RsaPublicKey</tt><big>(</big><em>key</em><big>)</big><a class="reference internal" href="_modules/simplecrypto/key.html#RsaPublicKey"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simplecrypto.key.RsaPublicKey" title="Permalink to this definition">¶</a></dt>
-<dd><p>Class for asymmetric public RSA key.</p>
+<dd><p>Bases: <a class="reference internal" href="#simplecrypto.key.Key" title="simplecrypto.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">simplecrypto.key.Key</span></tt></a></p>
+<p>Class for asymmetric public RSA key.</p>
 </dd></dl>
 
 <dl class="function">

@@ -11,11 +11,13 @@ hashes
    :members:
 
 
+
 key
 =========================
 
 .. automodule:: simplecrypto.key
    :members:
+   :show-inheritance:
 
 
 formats
