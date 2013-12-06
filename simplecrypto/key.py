@@ -132,7 +132,7 @@ class RsaPublicKey(Key):
             return session_encrypt_raw(message, self)
 
     def decrypt_raw(self, encrypted_message):
-        raise TypeError('RSA public keys are unable to decrypt messages.')
+        raise EncryptionError('RSA public keys are unable to decrypt messages.')
 
     def verify(self, message, signature):
         h = RSA_SHA.new()

@@ -6,7 +6,7 @@ sys.path.append(path.normpath(project_root))
 
 import unittest
 from simplecrypto import *
-from simplecrypto.key import session_encrypt_raw, session_decrypt_raw
+from simplecrypto.key import session_encrypt_raw, session_decrypt_raw, Key
 from simplecrypto.guess import _append_newline, _replace_backslashes
 
 class TestHashing(unittest.TestCase):
@@ -79,6 +79,17 @@ class TestSymmetric(unittest.TestCase):
         self.assertEqual(b'pass', key.serialize())
         self.assertEqual(key, AesKey(key.serialize()))
 
+class TestAbstractKey(unittest.TestCase):
+    def test_nbits(self):
+        self.assertEqual(128, Key('', block_size=16).nbits)
+
+    def test_block_size(self):
+        self.assertEqual(16, Key('', nbits=128).block_size)
+
+    def test_incomplete_constructor(self):
+        with self.assertRaises(EncryptionError):
+            Key('')
+
 class TestAsymmetric(unittest.TestCase):
     def test_encrypt(self):
         rsa = RsaKeypair(1024)
@@ -103,7 +114,11 @@ class TestAsymmetric(unittest.TestCase):
         skey = RsaKeypair(1024)
         pkey = skey.publickey
         self.assertEqual(skey, RsaKeypair(skey.serialize()))
-        self.assertEqual(pkey, RsaKeypair(pkey.serialize()))
+        self.assertEqual(pkey, RsaPublicKey(pkey.serialize()))
+
+    def test_invalid_operation(self):
+        with self.assertRaises(EncryptionError):
+            RsaKeypair(1024).publickey.decrypt('')
 
 class TestEncryptionProtocols(unittest.TestCase):
     def test_session(self):
