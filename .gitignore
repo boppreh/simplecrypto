@@ -3,6 +3,9 @@
 # Vim swapfiles
 *.swp
 
+# Sphinx build dir.
+docs/_build
+
 # C extensions
 *.so
 
