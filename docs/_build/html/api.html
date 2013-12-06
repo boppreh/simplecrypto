@@ -1,0 +1,351 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>API Documentation &mdash; simplecrypto 0.3.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.3.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="simplecrypto 0.3.1 documentation" href="index.html" />
+    <link rel="prev" title="Welcome to simplecrypto’s documentation!" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to simplecrypto’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">simplecrypto 0.3.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-simplecrypto">
+<span id="api-documentation"></span><h1>API Documentation<a class="headerlink" href="#module-simplecrypto" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-simplecrypto.hashes">
+<span id="hashes"></span><h2>hashes<a class="headerlink" href="#module-simplecrypto.hashes" title="Permalink to this headline">¶</a></h2>
+<p>Module for standard hash algorithms, always returning the hash in hexadecimal
+string format.</p>
+<dl class="function">
+<dt id="simplecrypto.hashes.hash">
+<tt class="descclassname">simplecrypto.hashes.</tt><tt class="descname">hash</tt><big>(</big><em>message</em><big>)</big><a class="headerlink" href="#simplecrypto.hashes.hash" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the hexadecimal representation of the SHA1 hash digest.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="simplecrypto.hashes.md5">
+<tt class="descclassname">simplecrypto.hashes.</tt><tt class="descname">md5</tt><big>(</big><em>message</em><big>)</big><a class="reference internal" href="_modules/simplecrypto/hashes.html#md5"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simplecrypto.hashes.md5" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the hexadecimal representation of the MD5 hash digest.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="simplecrypto.hashes.sha1">
+<tt class="descclassname">simplecrypto.hashes.</tt><tt class="descname">sha1</tt><big>(</big><em>message</em><big>)</big><a class="reference internal" href="_modules/simplecrypto/hashes.html#sha1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simplecrypto.hashes.sha1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the hexadecimal representation of the SHA1 hash digest.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="simplecrypto.hashes.sha256">
+<tt class="descclassname">simplecrypto.hashes.</tt><tt class="descname">sha256</tt><big>(</big><em>message</em><big>)</big><a class="reference internal" href="_modules/simplecrypto/hashes.html#sha256"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simplecrypto.hashes.sha256" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the hexadecimal representation of the SHA256 hash digest.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="simplecrypto.hashes.sha512">
+<tt class="descclassname">simplecrypto.hashes.</tt><tt class="descname">sha512</tt><big>(</big><em>message</em><big>)</big><a class="reference internal" href="_modules/simplecrypto/hashes.html#sha512"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simplecrypto.hashes.sha512" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the hexadecimal representation of the SHA512 hash digest.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-simplecrypto.key">
+<span id="key"></span><h2>key<a class="headerlink" href="#module-simplecrypto.key" title="Permalink to this headline">¶</a></h2>
+<p>Module for cryptographic keys in general.</p>
+<dl class="class">
+<dt id="simplecrypto.key.AesKey">
+<em class="property">class </em><tt class="descclassname">simplecrypto.key.</tt><tt class="descname">AesKey</tt><big>(</big><em>key=None</em><big>)</big><a class="reference internal" href="_modules/simplecrypto/key.html#AesKey"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simplecrypto.key.AesKey" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for symmetric AES with 256 bits block size.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="simplecrypto.key.Key">
+<em class="property">class </em><tt class="descclassname">simplecrypto.key.</tt><tt class="descname">Key</tt><big>(</big><em>algorithm_name</em>, <em>nbits=None</em>, <em>block_size=None</em><big>)</big><a class="reference internal" href="_modules/simplecrypto/key.html#Key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simplecrypto.key.Key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract base class for all keys, symmetric or not, public or not.</p>
+<p>Subclasses should implement <cite>encrypt_raw</cite>, <cite>decrypt_raw</cite> and <cite>serialize</cite>
+as necessary.</p>
+<dl class="method">
+<dt id="simplecrypto.key.Key.decrypt">
+<tt class="descname">decrypt</tt><big>(</big><em>encrypted_message</em><big>)</big><a class="reference internal" href="_modules/simplecrypto/key.html#Key.decrypt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simplecrypto.key.Key.decrypt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decrypts the given encrypted message, converting it to bytes as
+required. Returns the message&#8217;s bytes.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="simplecrypto.key.Key.decrypt_raw">
+<tt class="descname">decrypt_raw</tt><big>(</big><em>encrypted_message</em><big>)</big><a class="reference internal" href="_modules/simplecrypto/key.html#Key.decrypt_raw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simplecrypto.key.Key.decrypt_raw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decrypts the given message. <cite>encrypted_message</cite> must be of type <cite>bytes</cite>
+and the return is also raw bytes.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="simplecrypto.key.Key.encrypt">
+<tt class="descname">encrypt</tt><big>(</big><em>message</em><big>)</big><a class="reference internal" href="_modules/simplecrypto/key.html#Key.encrypt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simplecrypto.key.Key.encrypt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encrypts the given message, first converting it to raw bytes. Returns
+the base64 encoded encrypted message.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="simplecrypto.key.Key.encrypt_raw">
+<tt class="descname">encrypt_raw</tt><big>(</big><em>message</em><big>)</big><a class="reference internal" href="_modules/simplecrypto/key.html#Key.encrypt_raw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simplecrypto.key.Key.encrypt_raw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encrypts the given message. <cite>message</cite> must be of type <cite>bytes</cite> and the
+return is also raw bytes.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="simplecrypto.key.Key.serialize">
+<tt class="descname">serialize</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/simplecrypto/key.html#Key.serialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simplecrypto.key.Key.serialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a <cite>bytes</cite> object representing this key.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="simplecrypto.key.RsaKeypair">
+<em class="property">class </em><tt class="descclassname">simplecrypto.key.</tt><tt class="descname">RsaKeypair</tt><big>(</big><em>source=2048</em><big>)</big><a class="reference internal" href="_modules/simplecrypto/key.html#RsaKeypair"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simplecrypto.key.RsaKeypair" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for asymmetric RSA keypair.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="simplecrypto.key.RsaPublicKey">
+<em class="property">class </em><tt class="descclassname">simplecrypto.key.</tt><tt class="descname">RsaPublicKey</tt><big>(</big><em>key</em><big>)</big><a class="reference internal" href="_modules/simplecrypto/key.html#RsaPublicKey"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simplecrypto.key.RsaPublicKey" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for asymmetric public RSA key.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="simplecrypto.key.decrypt">
+<tt class="descclassname">simplecrypto.key.</tt><tt class="descname">decrypt</tt><big>(</big><em>encrypted_message</em>, <em>key</em><big>)</big><a class="reference internal" href="_modules/simplecrypto/key.html#decrypt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simplecrypto.key.decrypt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shortcut for AES256 base64 decryption with string or bytes key.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="simplecrypto.key.encrypt">
+<tt class="descclassname">simplecrypto.key.</tt><tt class="descname">encrypt</tt><big>(</big><em>message</em>, <em>key</em><big>)</big><a class="reference internal" href="_modules/simplecrypto/key.html#encrypt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simplecrypto.key.encrypt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shortcut for AES256 base64 encryption with string or bytes key.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="simplecrypto.key.receive">
+<tt class="descclassname">simplecrypto.key.</tt><tt class="descname">receive</tt><big>(</big><em>payload</em>, <em>recipient_key</em>, <em>sender_key</em><big>)</big><a class="reference internal" href="_modules/simplecrypto/key.html#receive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simplecrypto.key.receive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Receives a secure message from a binary payload.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="simplecrypto.key.send">
+<tt class="descclassname">simplecrypto.key.</tt><tt class="descname">send</tt><big>(</big><em>message</em>, <em>sender_key</em>, <em>*recipient_keys</em><big>)</big><a class="reference internal" href="_modules/simplecrypto/key.html#send"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simplecrypto.key.send" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends a secure message to one or more recipients. The message is encrypted
+with the recipient&#8217;s key (so only they can read it), and signed with the
+sender&#8217;s key (so the recipient can check the authenticity and integrity).</p>
+<p>Returns the binary payload.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="simplecrypto.key.session_decrypt_raw">
+<tt class="descclassname">simplecrypto.key.</tt><tt class="descname">session_decrypt_raw</tt><big>(</big><em>encrypted_message</em>, <em>destination_key</em><big>)</big><a class="reference internal" href="_modules/simplecrypto/key.html#session_decrypt_raw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simplecrypto.key.session_decrypt_raw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decrypts the message from a random session key, encrypted with the
+destination key.</p>
+<p>Superior alternative when the destination key is slow (ex RSA).</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="simplecrypto.key.session_encrypt_raw">
+<tt class="descclassname">simplecrypto.key.</tt><tt class="descname">session_encrypt_raw</tt><big>(</big><em>message</em>, <em>destination_key</em><big>)</big><a class="reference internal" href="_modules/simplecrypto/key.html#session_encrypt_raw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simplecrypto.key.session_encrypt_raw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encrypts the message with a random session key, and protects this session
+key by encrypting with the destination key.</p>
+<p>Superior alternative when the destination key is slow (ex RSA).</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-simplecrypto.formats">
+<span id="formats"></span><h2>formats<a class="headerlink" href="#module-simplecrypto.formats" title="Permalink to this headline">¶</a></h2>
+<p>Module for conversion between different formats, such as base64, hex, bytes and
+utf-8.</p>
+<dl class="function">
+<dt id="simplecrypto.formats.base64">
+<tt class="descclassname">simplecrypto.formats.</tt><tt class="descname">base64</tt><big>(</big><em>message</em><big>)</big><a class="headerlink" href="#simplecrypto.formats.base64" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the base64 representation of a string or bytes.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="simplecrypto.formats.from_base64">
+<tt class="descclassname">simplecrypto.formats.</tt><tt class="descname">from_base64</tt><big>(</big><em>message</em><big>)</big><a class="reference internal" href="_modules/simplecrypto/formats.html#from_base64"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simplecrypto.formats.from_base64" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the bytes from a base64 representation.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="simplecrypto.formats.from_hex">
+<tt class="descclassname">simplecrypto.formats.</tt><tt class="descname">from_hex</tt><big>(</big><em>message</em><big>)</big><a class="reference internal" href="_modules/simplecrypto/formats.html#from_hex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simplecrypto.formats.from_hex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the bytes from a (string) hexadecimal representation.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="simplecrypto.formats.hex">
+<tt class="descclassname">simplecrypto.formats.</tt><tt class="descname">hex</tt><big>(</big><em>message</em><big>)</big><a class="headerlink" href="#simplecrypto.formats.hex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the (string) hexadecimal representation of a string or bytes.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="simplecrypto.formats.pad">
+<tt class="descclassname">simplecrypto.formats.</tt><tt class="descname">pad</tt><big>(</big><em>message</em>, <em>length</em>, <em>padding=b'\x00'</em><big>)</big><a class="reference internal" href="_modules/simplecrypto/formats.html#pad"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simplecrypto.formats.pad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pads a message with binary zeroes until a given length is reached.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="simplecrypto.formats.pad_multiple">
+<tt class="descclassname">simplecrypto.formats.</tt><tt class="descname">pad_multiple</tt><big>(</big><em>message</em>, <em>len_multiple</em>, <em>padding=b'\x00'</em><big>)</big><a class="reference internal" href="_modules/simplecrypto/formats.html#pad_multiple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simplecrypto.formats.pad_multiple" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pads a message with binary zeroes until the length is a desired multiple.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="simplecrypto.formats.to_base64">
+<tt class="descclassname">simplecrypto.formats.</tt><tt class="descname">to_base64</tt><big>(</big><em>message</em><big>)</big><a class="reference internal" href="_modules/simplecrypto/formats.html#to_base64"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simplecrypto.formats.to_base64" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the base64 representation of a string or bytes.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="simplecrypto.formats.to_bytes">
+<tt class="descclassname">simplecrypto.formats.</tt><tt class="descname">to_bytes</tt><big>(</big><em>message</em><big>)</big><a class="reference internal" href="_modules/simplecrypto/formats.html#to_bytes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simplecrypto.formats.to_bytes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the bytes representation of an arbitrary message.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="simplecrypto.formats.to_hex">
+<tt class="descclassname">simplecrypto.formats.</tt><tt class="descname">to_hex</tt><big>(</big><em>message</em><big>)</big><a class="reference internal" href="_modules/simplecrypto/formats.html#to_hex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simplecrypto.formats.to_hex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the (string) hexadecimal representation of a string or bytes.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="simplecrypto.formats.to_str">
+<tt class="descclassname">simplecrypto.formats.</tt><tt class="descname">to_str</tt><big>(</big><em>message</em><big>)</big><a class="reference internal" href="_modules/simplecrypto/formats.html#to_str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simplecrypto.formats.to_str" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the string representation of an arbitrary message.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-simplecrypto.random">
+<span id="random"></span><h2>random<a class="headerlink" href="#module-simplecrypto.random" title="Permalink to this headline">¶</a></h2>
+<p>Module for retrieving cryptographically random values.</p>
+<dl class="function">
+<dt id="simplecrypto.random.random">
+<tt class="descclassname">simplecrypto.random.</tt><tt class="descname">random</tt><big>(</big><em>n_bytes</em><big>)</big><a class="reference internal" href="_modules/simplecrypto/random.html#random"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simplecrypto.random.random" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns <cite>n_bytes</cite> of cryptographically secure random bytes.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-simplecrypto.guess">
+<span id="guess"></span><h2>guess<a class="headerlink" href="#module-simplecrypto.guess" title="Permalink to this headline">¶</a></h2>
+<p>Module for reverse engineering crypto protocols.</p>
+<dl class="function">
+<dt id="simplecrypto.guess.guess_transformation">
+<tt class="descclassname">simplecrypto.guess.</tt><tt class="descname">guess_transformation</tt><big>(</big><em>message</em>, <em>hash_value</em><big>)</big><a class="reference internal" href="_modules/simplecrypto/guess.html#guess_transformation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simplecrypto.guess.guess_transformation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a <cite>message</cite> and its known value, returns the list of hash or modifiers
+functions applied to the message to arrive at the given <cite>hash_value</cite>.</p>
+<p>Useful for reverse engineering protocols or stored values.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-simplecrypto.exceptions">
+<span id="exceptions"></span><h2>exceptions<a class="headerlink" href="#module-simplecrypto.exceptions" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">API Documentation</a><ul>
+<li><a class="reference internal" href="#module-simplecrypto.hashes">hashes</a></li>
+<li><a class="reference internal" href="#module-simplecrypto.key">key</a></li>
+<li><a class="reference internal" href="#module-simplecrypto.formats">formats</a></li>
+<li><a class="reference internal" href="#module-simplecrypto.random">random</a></li>
+<li><a class="reference internal" href="#module-simplecrypto.guess">guess</a></li>
+<li><a class="reference internal" href="#module-simplecrypto.exceptions">exceptions</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Welcome to simplecrypto&#8217;s documentation!</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/api.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to simplecrypto’s documentation!"
+             >previous</a> |</li>
+        <li><a href="index.html">simplecrypto 0.3.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Lucas Boppre Niehues.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b3.
+    </div>
+  </body>
+</html>

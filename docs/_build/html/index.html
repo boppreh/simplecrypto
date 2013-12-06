@@ -1,0 +1,276 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Welcome to simplecrypto’s documentation! &mdash; simplecrypto 0.3.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.3.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="simplecrypto 0.3.1 documentation" href="#" />
+    <link rel="next" title="API Documentation" href="api.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="api.html" title="API Documentation"
+             accesskey="N">next</a> |</li>
+        <li><a href="#">simplecrypto 0.3.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="welcome-to-simplecrypto-s-documentation">
+<h1>Welcome to simplecrypto&#8217;s documentation!<a class="headerlink" href="#welcome-to-simplecrypto-s-documentation" title="Permalink to this headline">¶</a></h1>
+<p>Cryptographic library with really simple API.</p>
+<p>Includes functions for hashes, symmetric and asymmetric crypto, along with helper
+functions. Acts as a wrapper for <tt class="docutils literal"><span class="pre">PyCrypto</span></tt> and a few standard libraries.</p>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><pre>pip install simplecrypto</pre>
+</div>
+<p>This library depends on <tt class="docutils literal"><span class="pre">PyCrypto</span></tt>. On Linux this is installed automatically by
+pip. If the dependency installation fail on Windows, you may want to
+use a <a class="reference external" href="http://www.voidspace.org.uk/python/modules.shtml#pycrypto">prebuilt installer</a>.</p>
+</div>
+<div class="section" id="api-documentation">
+<h2>API Documentation<a class="headerlink" href="#api-documentation" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-simplecrypto.hashes">hashes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-simplecrypto.key">key</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-simplecrypto.formats">formats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-simplecrypto.random">random</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-simplecrypto.guess">guess</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-simplecrypto.exceptions">exceptions</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="hashes">
+<h2>Hashes<a class="headerlink" href="#hashes" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">simplecrypto</span> <span class="kn">import</span> <span class="n">md5</span><span class="p">,</span> <span class="n">sha1</span><span class="p">,</span> <span class="nb">hash</span>
+
+<span class="n">md5</span><span class="p">(</span><span class="s">&#39;The quick brown fox jumps over the lazy dog&#39;</span><span class="p">)</span>
+<span class="c"># &#39;9e107d9d372bb6826bd81d3542a419d6&#39;</span>
+
+<span class="n">sha1</span><span class="p">(</span><span class="s">&#39;The quick brown fox jumps over the lazy dog&#39;</span><span class="p">)</span>
+<span class="c"># &#39;2fd4e1c67a2d28fced849ee1bb76e7391b93eb12&#39;</span>
+
+<span class="c"># &#39;hash&#39; defaults to SHA1</span>
+<span class="nb">hash</span><span class="p">(</span><span class="s">&#39;message&#39;</span><span class="p">)</span>
+<span class="c"># &#39;6f9b9af3cd6e8b8a73c2cdced37fe9f59226e27d&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="symmetric-crypto">
+<h2>Symmetric crypto<a class="headerlink" href="#symmetric-crypto" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">simplecrypto</span> <span class="kn">import</span> <span class="n">encrypt</span><span class="p">,</span> <span class="n">decrypt</span><span class="p">,</span> <span class="n">AesKey</span>
+
+<span class="c"># `encrypt` and `decrypt` use AES-256.</span>
+
+<span class="n">m</span> <span class="o">=</span> <span class="n">encrypt</span><span class="p">(</span><span class="s">&#39;secret message&#39;</span><span class="p">,</span> <span class="s">&#39;secret key&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<span class="c"># &#39;uRKa9xX7zW6QT1yJxIQb5E/0DzaxQglVggnFam5K&#39;</span>
+<span class="n">decrypt</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s">&#39;secret key&#39;</span><span class="p">)</span>
+<span class="c"># b&#39;secret message&#39;</span>
+
+<span class="c"># Generates a new AES-256 random key.</span>
+<span class="n">key</span> <span class="o">=</span> <span class="n">AesKey</span><span class="p">()</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">encrypt</span><span class="p">(</span><span class="s">&#39;secret message&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<span class="c"># &#39;wFTwwaGMMCAsvmQxhmL7ztDksThtWvGm2gy1e2UV&#39;</span>
+<span class="n">key</span><span class="o">.</span><span class="n">decrypt</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<span class="c"># b&#39;secret message&#39;</span>
+
+<span class="n">key</span> <span class="o">=</span> <span class="n">AesKey</span><span class="p">(</span><span class="s">&#39;secret key&#39;</span><span class="p">)</span> <span class="c"># key from string</span>
+<span class="n">key</span> <span class="o">=</span> <span class="n">AesKey</span><span class="p">(</span><span class="n">random</span><span class="p">(</span><span class="mi">32</span><span class="p">))</span> <span class="c"># key from bytes</span>
+
+<span class="c"># AES keys can be exported and imported.</span>
+<span class="nb">open</span><span class="p">(</span><span class="s">&#39;key&#39;</span><span class="p">,</span> <span class="s">&#39;wb&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">serialize</span><span class="p">())</span>
+<span class="n">new_key</span> <span class="o">=</span> <span class="n">AesKey</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s">&#39;key&#39;</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">key</span> <span class="o">==</span> <span class="n">new_key</span><span class="p">)</span>
+<span class="c"># True</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="asymmetric-crypto">
+<h2>Asymmetric crypto<a class="headerlink" href="#asymmetric-crypto" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">simplecrypto</span> <span class="kn">import</span> <span class="n">RsaKeypair</span><span class="p">,</span> <span class="n">RsaPublicKey</span>
+
+<span class="n">skey</span> <span class="o">=</span> <span class="n">RsaKeypair</span><span class="p">(</span><span class="mi">2048</span><span class="p">)</span>
+<span class="n">pkey</span> <span class="o">=</span> <span class="n">skey</span><span class="o">.</span><span class="n">publickey</span>
+
+<span class="n">m</span> <span class="o">=</span> <span class="n">pkey</span><span class="o">.</span><span class="n">encrypt</span><span class="p">(</span><span class="s">&#39;secret message&#39;</span><span class="p">)</span>
+<span class="n">skey</span><span class="o">.</span><span class="n">decrypt</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<span class="c"># b&#39;secret message&#39;</span>
+
+<span class="n">s</span> <span class="o">=</span> <span class="n">skey</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="s">&#39;authenticated message&#39;</span><span class="p">)</span>
+<span class="n">pkey</span><span class="o">.</span><span class="n">verify</span><span class="p">(</span><span class="s">&#39;authenticated message&#39;</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+<span class="c"># True</span>
+
+<span class="c"># Long messages are encrypted with a random AES-256 key for performance.</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">pkey</span><span class="o">.</span><span class="n">encrypt</span><span class="p">(</span><span class="s">&#39;long message &#39;</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">skey</span><span class="o">.</span><span class="n">decrypt</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<span class="c"># b&#39;long message long message long message...&#39;</span>
+
+<span class="c"># RSA keypairs can be exported and imported.</span>
+<span class="nb">open</span><span class="p">(</span><span class="s">&#39;key&#39;</span><span class="p">,</span> <span class="s">&#39;wb&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">skey</span><span class="o">.</span><span class="n">serialize</span><span class="p">())</span>
+<span class="n">new_key</span> <span class="o">=</span> <span class="n">RsaKeypair</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s">&#39;key&#39;</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">skey</span> <span class="o">==</span> <span class="n">new_key</span><span class="p">)</span>
+<span class="c"># True</span>
+
+<span class="c"># Individual public keys too.</span>
+<span class="nb">open</span><span class="p">(</span><span class="s">&#39;key&#39;</span><span class="p">,</span> <span class="s">&#39;wb&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">pkey</span><span class="o">.</span><span class="n">serialize</span><span class="p">())</span>
+<span class="n">new_key</span> <span class="o">=</span> <span class="n">RsaPublicKey</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s">&#39;key&#39;</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">pkey</span> <span class="o">==</span> <span class="n">new_key</span><span class="p">)</span>
+<span class="c"># True</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="protocol-helpers">
+<h2>Protocol helpers<a class="headerlink" href="#protocol-helpers" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">simplecrypto</span> <span class="kn">import</span> <span class="n">RsaKeypair</span>
+<span class="kn">from</span> <span class="nn">simplecrypto</span> <span class="kn">import</span> <span class="n">send</span><span class="p">,</span> <span class="n">receive</span>
+
+<span class="n">alice</span> <span class="o">=</span> <span class="n">RsaKeypair</span><span class="p">()</span>
+<span class="n">bob</span> <span class="o">=</span> <span class="n">RsaKeypair</span><span class="p">()</span>
+<span class="n">charlie</span> <span class="o">=</span> <span class="n">RsaKeypair</span><span class="p">()</span>
+
+<span class="c"># Prepares a message from Alice to Bob and Charlie.</span>
+<span class="c"># The message is signed and encrypted.</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">send</span><span class="p">(</span><span class="s">&#39;secret message&#39;</span><span class="p">,</span> <span class="n">alice</span><span class="p">,</span> <span class="n">bob</span><span class="p">,</span> <span class="n">charlie</span><span class="p">)</span>
+
+<span class="c"># Bob opens the message from Alice.</span>
+<span class="n">receive</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">bob</span><span class="p">,</span> <span class="n">alice</span><span class="p">)</span>
+<span class="c"># b&#39;secret message&#39;</span>
+
+<span class="c"># Charlie opens the message from Alice.</span>
+<span class="n">receive</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">charlie</span><span class="p">,</span> <span class="n">alice</span><span class="p">)</span>
+<span class="c"># b&#39;secret message&#39;</span>
+
+<span class="c"># Eve tries to eavesdrop.</span>
+<span class="n">eve</span> <span class="o">=</span> <span class="n">RsaKeypair</span><span class="p">()</span>
+<span class="n">receive</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">eve</span><span class="p">,</span> <span class="n">alice</span><span class="p">)</span>
+<span class="c"># EncryptionError!</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="and-miscellaneous-helpers">
+<h2>And miscellaneous helpers<a class="headerlink" href="#and-miscellaneous-helpers" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">simplecrypto</span>
+
+<span class="n">simplecrypto</span><span class="o">.</span><span class="n">base64</span><span class="p">(</span><span class="s">&#39;message&#39;</span><span class="p">)</span>
+<span class="c"># &#39;bWVzc2FnZQ==&#39;</span>
+
+<span class="n">simplecrytpo</span><span class="o">.</span><span class="n">from_hex</span><span class="p">(</span><span class="s">&#39;FF&#39;</span><span class="p">)</span>
+<span class="c"># b&#39;\xff&#39;</span>
+
+<span class="n">simplecrypto</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="s">&#39;short&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s">&#39;.&#39;</span><span class="p">)</span>
+<span class="c"># b&#39;short.....&#39;</span>
+
+<span class="n">random</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="c"># b&#39;A\xd5\x12\x054&#39;    five random bytes</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Welcome to simplecrypto&#8217;s documentation!</a><ul>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#api-documentation">API Documentation</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#hashes">Hashes</a></li>
+<li><a class="reference internal" href="#symmetric-crypto">Symmetric crypto</a></li>
+<li><a class="reference internal" href="#asymmetric-crypto">Asymmetric crypto</a></li>
+<li><a class="reference internal" href="#protocol-helpers">Protocol helpers</a></li>
+<li><a class="reference internal" href="#and-miscellaneous-helpers">And miscellaneous helpers</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Next topic</h4>
+  <p class="topless"><a href="api.html"
+                        title="next chapter">API Documentation</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="api.html" title="API Documentation"
+             >next</a> |</li>
+        <li><a href="#">simplecrypto 0.3.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Lucas Boppre Niehues.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b3.
+    </div>
+  </body>
+</html>

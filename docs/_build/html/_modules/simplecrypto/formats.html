@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>simplecrypto.formats &mdash; simplecrypto 0.3.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.3.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="simplecrypto 0.3.1 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">simplecrypto 0.3.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for simplecrypto.formats</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Module for conversion between different formats, such as base64, hex, bytes and</span>
+<span class="sd">utf-8.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">base64</span> <span class="kn">import</span> <span class="n">b64encode</span><span class="p">,</span> <span class="n">b64decode</span>
+<span class="kn">from</span> <span class="nn">binascii</span> <span class="kn">import</span> <span class="n">hexlify</span><span class="p">,</span> <span class="n">unhexlify</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+<div class="viewcode-block" id="to_base64"><a class="viewcode-back" href="../../api.html#simplecrypto.formats.to_base64">[docs]</a><span class="k">def</span> <span class="nf">to_base64</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the base64 representation of a string or bytes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">b64encode</span><span class="p">(</span><span class="n">to_bytes</span><span class="p">(</span><span class="n">message</span><span class="p">))</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;ascii&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="from_base64"><a class="viewcode-back" href="../../api.html#simplecrypto.formats.from_base64">[docs]</a><span class="k">def</span> <span class="nf">from_base64</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the bytes from a base64 representation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">b64decode</span><span class="p">(</span><span class="n">to_bytes</span><span class="p">(</span><span class="n">message</span><span class="p">),</span> <span class="n">validate</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="to_hex"><a class="viewcode-back" href="../../api.html#simplecrypto.formats.to_hex">[docs]</a><span class="k">def</span> <span class="nf">to_hex</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the (string) hexadecimal representation of a string or bytes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">hexlify</span><span class="p">(</span><span class="n">to_bytes</span><span class="p">(</span><span class="n">message</span><span class="p">))</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;ascii&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="from_hex"><a class="viewcode-back" href="../../api.html#simplecrypto.formats.from_hex">[docs]</a><span class="k">def</span> <span class="nf">from_hex</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the bytes from a (string) hexadecimal representation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">unhexlify</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="to_bytes"><a class="viewcode-back" href="../../api.html#simplecrypto.formats.to_bytes">[docs]</a><span class="k">def</span> <span class="nf">to_bytes</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the bytes representation of an arbitrary message.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">message</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="to_str"><a class="viewcode-back" href="../../api.html#simplecrypto.formats.to_str">[docs]</a><span class="k">def</span> <span class="nf">to_str</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the string representation of an arbitrary message.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">message</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">message</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="pad"><a class="viewcode-back" href="../../api.html#simplecrypto.formats.pad">[docs]</a><span class="k">def</span> <span class="nf">pad</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="n">b</span><span class="s">&#39;</span><span class="se">\x00</span><span class="s">&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Pads a message with binary zeroes until a given length is reached.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="n">to_bytes</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">message</span> <span class="o">+</span> <span class="p">(</span><span class="n">length</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">message</span><span class="p">))</span> <span class="o">*</span> <span class="n">to_bytes</span><span class="p">(</span><span class="n">padding</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="pad_multiple"><a class="viewcode-back" href="../../api.html#simplecrypto.formats.pad_multiple">[docs]</a><span class="k">def</span> <span class="nf">pad_multiple</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">len_multiple</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="n">b</span><span class="s">&#39;</span><span class="se">\x00</span><span class="s">&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Pads a message with binary zeroes until the length is a desired multiple.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">next_length</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">message</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">len_multiple</span><span class="p">))</span> <span class="o">*</span> <span class="n">len_multiple</span>
+    <span class="k">return</span> <span class="n">pad</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">next_length</span><span class="p">),</span> <span class="n">padding</span><span class="p">)</span>
+
+<span class="c"># Shorthands.</span></div>
+<span class="n">base64</span> <span class="o">=</span> <span class="n">to_base64</span>
+<span class="nb">hex</span> <span class="o">=</span> <span class="n">to_hex</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">simplecrypto 0.3.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Lucas Boppre Niehues.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b3.
+    </div>
+  </body>
+</html>
