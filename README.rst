@@ -23,6 +23,9 @@ Documentation
 
 Documentation is available at http://simplecrypto.readthedocs.org.
 
+The full source code repository is at https://github.com/boppreh/simplecrypto.
+
+
 Installation
 ------------
 
