@@ -3,6 +3,7 @@ Module for standard hash algorithms, always returning the hash in hexadecimal
 string format.
 """
 import hashlib
+from Crypto.Hash import HMAC
 from .formats import to_bytes
 
 def md5(message):
@@ -29,8 +30,19 @@ def sha512(message):
     """
     return hashlib.sha512(to_bytes(message)).hexdigest()
 
+def hmac(message, key):
+    """
+    Returns the Hash Message Authentication Code for a given message, providing
+    integrity and authenticity assurances.
+    """
+    h = HMAC.new(to_bytes(key), to_bytes(message))
+    return h.hexdigest()
+
 # Available hash functions.
 hashes = [sha1, md5, sha256, sha512]
+
+# Default MAC algorithm.
+mac = hmac
 
 # Default hash function.
 hash = sha256
