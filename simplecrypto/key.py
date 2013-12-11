@@ -4,7 +4,7 @@ Module for cryptographic keys in general.
 from Crypto.Cipher import DES, AES, PKCS1_OAEP
 from Crypto.Signature import PKCS1_PSS
 from Crypto.PublicKey import RSA as _RSA
-from Crypto.Hash import SHA as RSA_SHA
+from Crypto.Hash import SHA256
 import struct
 import math
 
@@ -122,7 +122,7 @@ class RsaPublicKey(Key):
 
         Key.__init__(self, 'RSA', nbits=self.rsa.size())
 
-        self.oaep = PKCS1_OAEP.new(self.rsa)
+        self.oaep = PKCS1_OAEP.new(self.rsa, hashAlgo=SHA256)
         self.pss = PKCS1_PSS.new(self.rsa)
 
     def encrypt_raw(self, message):
@@ -135,7 +135,7 @@ class RsaPublicKey(Key):
         raise EncryptionError('RSA public keys are unable to decrypt messages.')
 
     def verify(self, message, signature):
-        h = RSA_SHA.new()
+        h = SHA256.new()
         h.update(to_bytes(message))
         return self.pss.verify(h, signature)
 
@@ -159,7 +159,7 @@ class RsaKeypair(Key):
 
         Key.__init__(self, 'RSA', nbits=self.rsa.size())
 
-        self.oaep = PKCS1_OAEP.new(self.rsa)
+        self.oaep = PKCS1_OAEP.new(self.rsa, hashAlgo=SHA256)
         self.pss = PKCS1_PSS.new(self.rsa)
         self.publickey = RsaPublicKey(self.rsa.publickey())
 
@@ -178,7 +178,7 @@ class RsaKeypair(Key):
         return self.publickey.verify(message, signature)
 
     def sign(self, message):
-        h = RSA_SHA.new()
+        h = SHA256.new()
         h.update(to_bytes(message))
         return self.pss.sign(h)
 
