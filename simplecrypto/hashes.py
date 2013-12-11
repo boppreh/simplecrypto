@@ -33,4 +33,4 @@ def sha512(message):
 hashes = [sha1, md5, sha256, sha512]
 
 # Default hash function.
-hash = sha1
+hash = sha256
