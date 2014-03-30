@@ -147,14 +147,15 @@ class RsaKeypair(Key):
     """
     Class for asymmetric RSA keypair.
     """
-    def __init__(self, source=2048):
+    def __init__(self, source=2048, prng=random):
         """
         Creates a new RSA keypair. Source may either be the serialized bytes or
-        the number of desired bits.
+        the number of desired bits. If source is the number of desired bits,
+        prng can be specified.
         """
-        if isinstance(source, int):
-            self.rsa = _RSA.generate(source, random)
-        else:
+        if type(source) is int:
+            self.rsa = _RSA.generate(source, prng)
+        elif type(source) in [str, bytes]:
             self.rsa = _RSA.importKey(source)
 
         Key.__init__(self, 'RSA', nbits=self.rsa.size())
