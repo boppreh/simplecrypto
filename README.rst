@@ -36,6 +36,8 @@ Installation
 This library depends on ``PyCrypto``. On Linux this is installed automatically by
 pip. If the dependency installation fail on Windows, you may want to 
 use a `prebuilt installer <http://www.voidspace.org.uk/python/modules.shtml#pycrypto>`_.
+If you wish to compile it I suggest using the Mingw tools [as indicated
+here](http://stackoverflow.com/a/5051281/252218).
 
 
 Usage
