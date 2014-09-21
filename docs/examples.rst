@@ -15,9 +15,9 @@ Hashes
   sha1('The quick brown fox jumps over the lazy dog')
   # '2fd4e1c67a2d28fced849ee1bb76e7391b93eb12'
 
-  # 'hash' defaults to SHA1
+  # 'hash' defaults to SHA-256
   hash('message')
-  # '6f9b9af3cd6e8b8a73c2cdced37fe9f59226e27d'
+  # 'ab530a13e45914982b79f9b7e3fba994cfd1f3fb22f71cea1afbf02b460c6d1d'
 
 
 Symmetric crypto
