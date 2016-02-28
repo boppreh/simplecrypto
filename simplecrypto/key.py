@@ -37,7 +37,7 @@ class Key(object):
 
         self.algorithm_name = algorithm_name
         self.algorithm = '{}-{}'.format(algorithm_name, nbits)
-        self.block_size = block_size
+        self.block_size = int(block_size) 
         self.nbits = nbits
 
     def encrypt_raw(self, message):
@@ -82,7 +82,7 @@ class Key(object):
 
     def __eq__(self, other):
         return self.serialize() == other.serialize()
-        
+
 
 class AesKey(Key):
     """
@@ -167,7 +167,7 @@ class RsaKeypair(Key):
     def encrypt_raw(self, message):
         # Delegate to public key.
         return self.publickey.encrypt_raw(message)
-    
+
     def decrypt_raw(self, message):
         if len(message) <= self.block_size + AES.block_size * 2:
             return self.oaep.decrypt(message)
@@ -221,7 +221,6 @@ def session_decrypt_raw(encrypted_message, destination_key):
     Superior alternative when the destination key is slow (ex RSA).
     """
     block_size = destination_key.block_size
-
     encrypted_session_key = encrypted_message[:block_size]
     message = encrypted_message[block_size:]
     session_key = AesKey(destination_key.decrypt_raw(encrypted_session_key))
@@ -255,13 +254,13 @@ def receive(payload, recipient_key, sender_key):
     n_recipients = struct.unpack('I', payload[:4])[0]
     end_of_session_keys = 4 + n_recipients * recipient_key.block_size
     end_of_signature = end_of_session_keys + sender_key.block_size
-
     encrypted_session_keys = payload[4:end_of_session_keys]
 
     session_key = None
     for i in range(n_recipients):
         start = i * recipient_key.block_size
         end = start + recipient_key.block_size
+
         encrypted_session_key = encrypted_session_keys[start:end]
         try:
             session_key_bytes = recipient_key.decrypt_raw(encrypted_session_key)
@@ -272,6 +271,7 @@ def receive(payload, recipient_key, sender_key):
     if session_key is None:
         raise EncryptionError('Unexpected recipient (no respective key found).')
     decrypted_message = session_key.decrypt_raw(payload[end_of_session_keys:])
+
     signature = decrypted_message[:sender_key.block_size]
     message = decrypted_message[sender_key.block_size:]
     if not sender_key.verify(message, signature):
