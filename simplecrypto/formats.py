@@ -16,7 +16,7 @@ def from_base64(message):
     """
     Returns the bytes from a base64 representation.
     """
-    return b64decode(to_bytes(message), validate=True)
+    return b64decode(to_bytes(message))
 
 def to_hex(message):
     """
@@ -35,7 +35,10 @@ def to_bytes(message):
     Returns the bytes representation of an arbitrary message.
     """
     if isinstance(message, str):
-        return message.encode('utf-8')
+        try:
+            return message.encode('utf-8')
+        except UnicodeDecodeError:
+            return bytes(message)
     else:
         return bytes(message)
 
